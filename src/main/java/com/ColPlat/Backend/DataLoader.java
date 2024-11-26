@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DataLoader {
     @PostConstruct
     public void addUserData(){
         List<Role> roles = new ArrayList<>(Arrays.asList(Role.ADMIN, Role.SALES_MANAGEMENT, Role.SALES, Role.PROJECT_MANAGEMENT, Role.PROJECT));
-        User user = new User(1,"Jovan","Stankovic","j.stankovic001@gmail.com",passwordEncoder.encode("123"),roles);
+        User user = new User(1L, "Jovan","Stankovic","j.stankovic001@gmail.com",passwordEncoder.encode("123"),roles);
         userRepository.save(user);
     }
 

@@ -43,8 +43,9 @@ public class SecurityConfiguration {
                     source.registerCorsConfiguration("/**", configuration);
                     c.configurationSource(source);
                 })
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
-                        .permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**", "/api/v1/msg/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
