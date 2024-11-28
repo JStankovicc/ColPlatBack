@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,6 +28,7 @@ public class ContactMessageRequest {
         contactMessage.setMessage(this.getMessage());
         contactMessage.setSeen(false);
         contactMessage.setResponded(false);
+        contactMessage.setCreatedAt(LocalDateTime.now());
 
         return contactMessage;
     }
