@@ -8,9 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Component
 public class DataLoader {
@@ -26,8 +25,13 @@ public class DataLoader {
 
     @PostConstruct
     public void addUserData(){
-        List<Role> roles = new ArrayList<>(Arrays.asList(Role.ADMIN, Role.SALES_MANAGEMENT, Role.SALES, Role.PROJECT_MANAGEMENT, Role.PROJECT));
-        User user = new User(1L, "Jovan","Stankovic","j.stankovic001@gmail.com",passwordEncoder.encode("123"),roles);
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.ADMIN);
+        roles.add(Role.SALES_MANAGEMENT);
+        roles.add(Role.SALES);
+        roles.add(Role.PROJECT_MANAGEMENT);
+        roles.add(Role.PROJECT);
+        User user = new User(1L,"Jovan","Stankovic","j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,roles,true,true,true, LocalDateTime.now(),LocalDateTime.now());
         userRepository.save(user);
     }
 

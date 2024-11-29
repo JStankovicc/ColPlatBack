@@ -44,7 +44,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
         var jwt = jwtService.generateToken(user);
         List<String> roles = new ArrayList<String>();
-        for(Role role : user.getRole()){
+        for(Role role : user.getRoles()){
             roles.add(role.toString());
         }
         return JwtAuthenticationResponse.builder().token(jwt).role(roles).build();
@@ -58,7 +58,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             var user = userRepository.findByEmail(username).orElseThrow(() -> new IllegalArgumentException("Invalid email"));
             String jwt = jwtService.generateToken(user);
             List<String> roles = new ArrayList<String>();
-            for(Role role : user.getRole()){
+            for(Role role : user.getRoles()){
                 roles.add(role.toString());
             }
             return JwtAuthenticationResponse.builder().token(jwt).role(roles).build();

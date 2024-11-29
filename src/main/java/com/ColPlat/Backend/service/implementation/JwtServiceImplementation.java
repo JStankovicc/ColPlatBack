@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -54,11 +55,22 @@ public class JwtServiceImplementation implements JwtService {
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        if (userDetails instanceof User) {
+            User user = (User) userDetails;
+            extraClaims.put("roles", user.getRoles().stream()
+                    .map(Enum::name)
+                    .toList());
+        }
+
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
+
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

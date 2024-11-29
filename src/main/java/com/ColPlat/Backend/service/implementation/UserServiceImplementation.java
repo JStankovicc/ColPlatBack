@@ -6,13 +6,17 @@ import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
 import com.ColPlat.Backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,22 +41,29 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void addUser(UserRequest userRequest) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
-        String password = userRequest.getPassword();
-
-        User user = User.builder().firstName(userRequest.getFirstName()).lastName(userRequest.getLastName()).email(userRequest.getEmail()).password(new BCryptPasswordEncoder().encode(password)).build();
+        User user = User.builder()
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .email(userRequest.getEmail())
+                .password(encodedPassword)
+                .roles(new HashSet<>())
+                .build();
 
         for (String roleStr : userRequest.getRole()) {
             try {
                 Role roleEnum = Role.valueOf(roleStr.toUpperCase());
-                user.getRole().add(roleEnum);
+                user.getRoles().add(roleEnum);
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid role: " + roleStr);
+                throw new IllegalArgumentException("Invalid role: " + roleStr);
             }
         }
 
         userRepository.save(user);
     }
+
 
     @Override
     public void deleteUserByEmail(String email) {
@@ -64,4 +75,17 @@ public class UserServiceImplementation implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow();
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with email: " + userEmail));
+
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
 }
