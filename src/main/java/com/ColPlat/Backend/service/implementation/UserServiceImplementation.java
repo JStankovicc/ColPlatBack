@@ -45,8 +45,6 @@ public class UserServiceImplementation implements UserService {
         String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
         User user = User.builder()
-                .firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName())
                 .email(userRequest.getEmail())
                 .password(encodedPassword)
                 .roles(new HashSet<>())

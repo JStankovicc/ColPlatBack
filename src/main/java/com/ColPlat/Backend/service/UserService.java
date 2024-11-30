@@ -16,7 +16,7 @@ public interface UserService {
 
     void deleteUserByEmail(String email);
 
-    User findByEmail(String zapisnikUneo);
+    User findByEmail(String email);
 
     UserDetails loadUserByUsername(String userEmail);
 }

@@ -1,13 +1,20 @@
 package com.ColPlat.Backend;
 
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.model.enums.Role;
+import com.ColPlat.Backend.repository.UserProfileRepository;
 import com.ColPlat.Backend.repository.UserRepository;
+import com.sun.tools.javac.Main;
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -18,9 +25,12 @@ public class DataLoader {
 
     private final UserRepository userRepository;
 
-    public DataLoader(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    private final UserProfileRepository userProfileRepository;
+
+    public DataLoader(PasswordEncoder passwordEncoder, UserRepository userRepository, UserProfileRepository userProfileRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     @PostConstruct
@@ -31,8 +41,24 @@ public class DataLoader {
         roles.add(Role.SALES);
         roles.add(Role.PROJECT_MANAGEMENT);
         roles.add(Role.PROJECT);
-        User user = new User(1L,"Jovan","Stankovic","j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,roles,true,true,true, LocalDateTime.now(),LocalDateTime.now());
+        User user = new User(1L,"j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,roles,true,true,true, LocalDateTime.now(),LocalDateTime.now());
         userRepository.save(user);
+
+
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/test.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        UserProfile userProfile = new UserProfile(1L,"JStankovic", "Jovan", "Stankovic",defaultProfilePic,1L, LocalDateTime.now(),LocalDateTime.now());
+        userProfileRepository.save(userProfile);
     }
 
 }

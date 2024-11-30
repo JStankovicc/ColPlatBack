@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, BigInteger> {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     User findUserByEmail(String email);
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface ContactMessageRepository extends JpaRepository<ContactMessage, BigInteger> {
+public interface ContactMessageRepository extends JpaRepository<ContactMessage, Long> {
 }

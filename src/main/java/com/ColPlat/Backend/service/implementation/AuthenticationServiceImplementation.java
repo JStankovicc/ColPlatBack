@@ -27,9 +27,8 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final AuthenticationManager authenticationManager;
     @Override
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
-        var user = User.builder().firstName(request.getFirstName()).lastName(request.getLastName())
+        var user = User.builder()
                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                //.role(Role.USER)
                 .build();
         userRepository.save(user);
         var jwt = jwtService.generateToken(user);
