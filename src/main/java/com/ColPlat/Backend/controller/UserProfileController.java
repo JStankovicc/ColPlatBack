@@ -16,7 +16,7 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @GetMapping("/get")
+    @GetMapping("/getUserProfile")
     public ResponseEntity<UserProfileResponse> getUserProfile(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
 

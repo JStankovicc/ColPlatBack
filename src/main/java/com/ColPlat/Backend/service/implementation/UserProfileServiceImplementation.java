@@ -1,6 +1,5 @@
 package com.ColPlat.Backend.service.implementation;
 
-import com.ColPlat.Backend.model.dto.request.UserProfileRequest;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.entity.UserProfile;

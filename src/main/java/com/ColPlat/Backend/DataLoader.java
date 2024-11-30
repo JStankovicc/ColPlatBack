@@ -46,7 +46,7 @@ public class DataLoader {
 
 
         byte[] defaultProfilePic = null;
-        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/test.png")) {
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
             if (inputStream != null) {
                 defaultProfilePic = inputStream.readAllBytes();
             } else {
