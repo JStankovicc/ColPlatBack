@@ -7,6 +7,7 @@ import com.ColPlat.Backend.repository.UserProfileRepository;
 import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserProfileService;
 import com.ColPlat.Backend.service.UserService;
+import com.ColPlat.Backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class UserProfileServiceImplementation implements UserProfileService {
                 return new UserProfileResponse(
                         profile.getDisplayName(),
                         profile.getFirstName() + " " + profile.getLastName(),
-                        compressImage(profile.getProfilePic())
+                        ImageUtils.getInstance().compressPngImageToThumbnail(profile.getProfilePic())
                 );
             } catch (IOException e) {
                 return new UserProfileResponse(
@@ -51,16 +52,5 @@ public class UserProfileServiceImplementation implements UserProfileService {
 
     }
 
-    public byte[] compressImage(byte[] originalImage) throws IOException {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(originalImage);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        Thumbnails.of(inputStream)
-                .size(200, 200)
-                .outputFormat("png")
-                .toOutputStream(outputStream);
-
-        return outputStream.toByteArray();
-    }
 
 }
