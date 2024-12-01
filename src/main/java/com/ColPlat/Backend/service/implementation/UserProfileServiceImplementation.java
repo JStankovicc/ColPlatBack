@@ -1,19 +1,23 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.dto.request.SignInRequest;
+import com.ColPlat.Backend.model.dto.request.UserProfileWithPasswordRequest;
+import com.ColPlat.Backend.model.dto.request.UserProfileWithoutPasswordRequest;
+import com.ColPlat.Backend.model.dto.response.JwtAuthenticationResponse;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.repository.UserProfileRepository;
+import com.ColPlat.Backend.repository.UserRepository;
+import com.ColPlat.Backend.service.AuthenticationService;
 import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserProfileService;
 import com.ColPlat.Backend.service.UserService;
 import com.ColPlat.Backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -25,6 +29,9 @@ public class UserProfileServiceImplementation implements UserProfileService {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private final AuthenticationService authenticationService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserProfileResponse getUserProfileFromToken(String token) {
@@ -52,5 +59,65 @@ public class UserProfileServiceImplementation implements UserProfileService {
 
     }
 
+    @Override
+    public void changeProfilePicture(String token, byte[] imageBytes) {
+        String username = jwtService.extractUserName(token);
+        User user = userService.findByEmail(username);
+        Optional<UserProfile> userProfile = userProfileRepository.findById(user.getUserProfileId());
 
+        if (userProfile.isPresent()) {
+            UserProfile profile = userProfile.get();
+            profile.setProfilePic(imageBytes);
+            userProfileRepository.save(profile);
+        }
+    }
+
+    @Override
+    public JwtAuthenticationResponse updateProfileWithoutPassword(String token, UserProfileWithoutPasswordRequest request) {
+        String username = jwtService.extractUserName(token);
+        User user = userService.findByEmail(username);
+        Optional<UserProfile> userProfile = userProfileRepository.findById(user.getUserProfileId());
+
+        if (userProfile.isPresent()) {
+            UserProfile profile = userProfile.get();
+            profile.setDisplayName(request.getDisplayName());
+            profile.setFirstName(request.getFirstName());
+            profile.setLastName(request.getLastName());
+
+            userProfileRepository.save(profile);
+
+            user.setEmail(request.getEmail());
+            userRepository.save(user);
+        }
+
+        String jwt = jwtService.generateToken(user);
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        jwtAuthenticationResponse.setToken(jwt);
+
+        return jwtAuthenticationResponse;
+    }
+
+    @Override
+    public JwtAuthenticationResponse updateProfileWithPassword(String token, UserProfileWithPasswordRequest request) {
+        String username = jwtService.extractUserName(token);
+        User user = userService.findByEmail(username);
+        Optional<UserProfile> userProfile = userProfileRepository.findById(user.getUserProfileId());
+
+        if (userProfile.isPresent()) {
+            UserProfile profile = userProfile.get();
+            profile.setDisplayName(request.getDisplayName());
+            profile.setFirstName(request.getFirstName());
+            profile.setLastName(request.getLastName());
+
+            userProfileRepository.save(profile);
+
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+        }
+
+
+        return authenticationService.signIn(new SignInRequest(request.getEmail(), request.getPassword()));
+
+    }
 }
