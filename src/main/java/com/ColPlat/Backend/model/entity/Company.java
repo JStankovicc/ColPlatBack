@@ -1,6 +1,7 @@
 package com.ColPlat.Backend.model.entity;
 
 import com.ColPlat.Backend.model.dto.response.CompanyResponse;
+import com.ColPlat.Backend.model.enums.SupportTypes;
 import com.ColPlat.Backend.utils.ImageUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -31,7 +33,16 @@ public class Company {
     private byte[] companyLogoPic;
     private Long billingDetailsId;
     private boolean termsAndConditionsAccepted;
-    private String supportType;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "_company_support",
+            joinColumns = @JoinColumn(name = "company_id")
+    )
+    @Enumerated(EnumType.STRING)
+    private Set<SupportTypes> supportTypes;
+    private int basicProfilesNum;
+    private int advancedProfilesNum;
+    private int premiumProfilesNum;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -100,12 +111,12 @@ public class Company {
         this.termsAndConditionsAccepted = termsAndConditionsAccepted;
     }
 
-    public String getSupportType() {
-        return supportType;
+    public Set<SupportTypes> getSupportTypes() {
+        return supportTypes;
     }
 
-    public void setSupportType(String supportType) {
-        this.supportType = supportType;
+    public void setSupportTypes(Set<SupportTypes> supportTypes) {
+        this.supportTypes = supportTypes;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -122,5 +133,33 @@ public class Company {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setLocationId(long locationId) {
+        this.locationId = locationId;
+    }
+
+    public int getBasicProfilesNum() {
+        return basicProfilesNum;
+    }
+
+    public void setBasicProfilesNum(int basicProfilesNum) {
+        this.basicProfilesNum = basicProfilesNum;
+    }
+
+    public int getAdvancedProfilesNum() {
+        return advancedProfilesNum;
+    }
+
+    public void setAdvancedProfilesNum(int advancedProfilesNum) {
+        this.advancedProfilesNum = advancedProfilesNum;
+    }
+
+    public int getPremiumProfilesNum() {
+        return premiumProfilesNum;
+    }
+
+    public void setPremiumProfilesNum(int premiumProfilesNum) {
+        this.premiumProfilesNum = premiumProfilesNum;
     }
 }

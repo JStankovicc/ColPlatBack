@@ -1,6 +1,7 @@
 package com.ColPlat.Backend.controller;
 
 import com.ColPlat.Backend.model.dto.response.CompanyResponse;
+import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
 import com.ColPlat.Backend.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class CompanyController {
         String token = authorizationHeader.replace("Bearer ", "");
 
         return ResponseEntity.ok(companyService.getCompanyInfoFromToken(token));
+    }
+
+    @RequestMapping("/getCompanySettingsInfo")
+    public ResponseEntity<CompanySettingsInfoResponse> getCompanySettingsInfo(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ","");
+        return ResponseEntity.ok(companyService.getCompanySettingsInfoFromToken(token));
     }
 
 }

@@ -1,12 +1,9 @@
 package com.ColPlat.Backend;
 
-import com.ColPlat.Backend.model.entity.Company;
-import com.ColPlat.Backend.model.entity.User;
-import com.ColPlat.Backend.model.entity.UserProfile;
+import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.model.enums.Role;
-import com.ColPlat.Backend.repository.CompanyRepository;
-import com.ColPlat.Backend.repository.UserProfileRepository;
-import com.ColPlat.Backend.repository.UserRepository;
+import com.ColPlat.Backend.model.enums.SupportTypes;
+import com.ColPlat.Backend.repository.*;
 import com.sun.tools.javac.Main;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +29,11 @@ public class DataLoader {
     private final UserProfileRepository userProfileRepository;
 
     private final CompanyRepository companyRepository;
+
+    private final CountryRepository countryRepository;
+    private final RegionRepository regionRepository;
+    private final CityRepository cityRepository;
+    private final LocationRepository locationRepository;
 
     @PostConstruct
     public void addUserData(){
@@ -76,9 +78,34 @@ public class DataLoader {
             e.printStackTrace();
             throw new RuntimeException("Greška prilikom učitavanja slike!");
         }
-        Company company = new Company(1L,"MockCompany", "123456789", 1L, defaultLogo, 1L, true, "BASIC", LocalDateTime.now(), LocalDateTime.now());
+
+        Set<SupportTypes> supportTypes = new HashSet<>();
+        supportTypes.add(SupportTypes.EMAIL);
+        supportTypes.add(SupportTypes.CHAT);
+
+        Company company = new Company(1L,"MockCompany", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
 
         companyRepository.save(company);
+
+    }
+
+    @PostConstruct
+    public void addMockLocation(){
+        Country country = new Country((short) 1,"Serbia");
+        countryRepository.save(country);
+
+        Region region = new Region(1,(short) 1, "Beograd");
+        regionRepository.save(region);
+        region = new Region(2, (short) 1, "Raski okrug");
+        regionRepository.save(region);
+
+        City city = new City(1,1, "Grad Beograd");
+        cityRepository.save(city);
+        city = new City(2, 1, "Kraljevo");
+        cityRepository.save(city);
+
+        Location location = new Location(1L, 2, "Karadjordjeva 171");
+        locationRepository.save(location);
 
     }
 
