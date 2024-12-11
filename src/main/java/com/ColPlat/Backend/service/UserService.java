@@ -19,4 +19,5 @@ public interface UserService {
     User findByEmail(String email);
 
     UserDetails loadUserByUsername(String userEmail);
+
 }

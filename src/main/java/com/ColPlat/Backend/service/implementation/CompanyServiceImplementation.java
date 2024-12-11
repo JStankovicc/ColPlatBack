@@ -23,6 +23,7 @@ public class CompanyServiceImplementation implements CompanyService {
     private final CountryService countryService;
     private final RegionService regionService;
     private final CityService cityService;
+
     @Override
     public CompanyResponse getCompanyInfoFromToken(String token) {
         String email = jwtService.extractUserName(token);
@@ -77,5 +78,21 @@ public class CompanyServiceImplementation implements CompanyService {
         }
         return null;
     }
+
+    @Override
+    public Company findById(Long companyId) {
+        Optional<Company> companyOptional = companyRepository.findById(companyId);
+        if(companyOptional.isPresent()){
+            return companyOptional.get();
+        }
+        return null;
+    }
+
+    @Override
+    public void replaceLogo(Company company, byte[] imageBytes) {
+        company.setCompanyLogoPic(imageBytes);
+        companyRepository.save(company);
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.ColPlat.Backend.model.dto.request.UserRequest;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
+import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,7 +62,6 @@ public class UserServiceImplementation implements UserService {
 
         userRepository.save(user);
     }
-
 
     @Override
     public void deleteUserByEmail(String email) {
