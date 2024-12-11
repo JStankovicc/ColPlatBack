@@ -1,7 +1,7 @@
 package com.ColPlat.Backend.model.entity;
 
 import com.ColPlat.Backend.model.dto.response.CompanyResponse;
-import com.ColPlat.Backend.model.enums.SupportTypes;
+import com.ColPlat.Backend.model.enums.SupportType;
 import com.ColPlat.Backend.utils.ImageUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,7 +39,7 @@ public class Company {
             joinColumns = @JoinColumn(name = "company_id")
     )
     @Enumerated(EnumType.STRING)
-    private Set<SupportTypes> supportTypes;
+    private Set<SupportType> supportTypes;
     private int basicProfilesNum;
     private int advancedProfilesNum;
     private int premiumProfilesNum;
@@ -111,11 +111,11 @@ public class Company {
         this.termsAndConditionsAccepted = termsAndConditionsAccepted;
     }
 
-    public Set<SupportTypes> getSupportTypes() {
+    public Set<SupportType> getSupportTypes() {
         return supportTypes;
     }
 
-    public void setSupportTypes(Set<SupportTypes> supportTypes) {
+    public void setSupportTypes(Set<SupportType> supportTypes) {
         this.supportTypes = supportTypes;
     }
 

@@ -2,7 +2,7 @@ package com.ColPlat.Backend;
 
 import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.model.enums.Role;
-import com.ColPlat.Backend.model.enums.SupportTypes;
+import com.ColPlat.Backend.model.enums.SupportType;
 import com.ColPlat.Backend.repository.*;
 import com.sun.tools.javac.Main;
 import jakarta.annotation.PostConstruct;
@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -79,9 +76,9 @@ public class DataLoader {
             throw new RuntimeException("Greška prilikom učitavanja slike!");
         }
 
-        Set<SupportTypes> supportTypes = new HashSet<>();
-        supportTypes.add(SupportTypes.EMAIL);
-        supportTypes.add(SupportTypes.CHAT);
+        Set<SupportType> supportTypes = new HashSet<>();
+        supportTypes.add(SupportType.EMAIL);
+        supportTypes.add(SupportType.CHAT);
         //supportTypes.add(SupportTypes.PHONE);
 
         Company company = new Company(1L,"MockCompany", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());

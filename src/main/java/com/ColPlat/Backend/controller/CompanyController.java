@@ -4,6 +4,7 @@ import com.ColPlat.Backend.model.dto.response.CompanyResponse;
 import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.enums.SupportType;
 import com.ColPlat.Backend.service.CompanyService;
 import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserService;
@@ -11,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/company")
@@ -48,5 +52,15 @@ public class CompanyController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
+    }
+
+    @GetMapping("/getAllSupportTypes")
+    public ResponseEntity<List<String>> getAllSupportTypes(){
+        SupportType[] supportTypes = SupportType.values();
+        List<String> types = new ArrayList<>();
+        for(SupportType s : supportTypes){
+            types.add(s.toString());
+        }
+        return ResponseEntity.ok(types);
     }
 }

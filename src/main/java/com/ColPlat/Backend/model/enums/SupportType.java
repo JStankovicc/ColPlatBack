@@ -1,6 +1,6 @@
 package com.ColPlat.Backend.model.enums;
 
-public enum SupportTypes {
+public enum SupportType {
     EMAIL,
     CHAT,
     PHONE
