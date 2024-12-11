@@ -6,6 +6,7 @@ import com.ColPlat.Backend.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,15 @@ public class CityServiceImplementation implements CityService {
     public List<City> getCitiesByRegion(int id) {
         List<City> citiesByRegion = cityRepository.findAllByRegionId(id);
         return citiesByRegion;
+    }
+
+    @Override
+    public List<String> getCitiesNamesByRegion(Integer regionId) {
+        List<City> cities = cityRepository.findAllByRegionId(regionId);
+        List<String> names = new ArrayList<>();
+        for(City c : cities){
+            names.add(c.getName());
+        }
+        return names;
     }
 }

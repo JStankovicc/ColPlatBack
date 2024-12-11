@@ -82,6 +82,7 @@ public class DataLoader {
         Set<SupportTypes> supportTypes = new HashSet<>();
         supportTypes.add(SupportTypes.EMAIL);
         supportTypes.add(SupportTypes.CHAT);
+        //supportTypes.add(SupportTypes.PHONE);
 
         Company company = new Company(1L,"MockCompany", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
 
@@ -91,7 +92,7 @@ public class DataLoader {
 
     @PostConstruct
     public void addMockLocation(){
-        Country country = new Country((short) 1,"Serbia");
+        Country country = new Country((short) 1,"Srbija");
         countryRepository.save(country);
 
         Region region = new Region(1,(short) 1, "Beograd");
@@ -101,10 +102,12 @@ public class DataLoader {
 
         City city = new City(1,1, "Grad Beograd");
         cityRepository.save(city);
-        city = new City(2, 1, "Kraljevo");
+        city = new City(2, 2, "Kraljevo");
         cityRepository.save(city);
 
         Location location = new Location(1L, 2, "Karadjordjeva 171");
+        locationRepository.save(location);
+        location = new Location(2L,1,"Narodnih heroja 17/13");
         locationRepository.save(location);
 
     }
