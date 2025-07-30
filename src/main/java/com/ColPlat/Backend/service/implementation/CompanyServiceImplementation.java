@@ -94,5 +94,11 @@ public class CompanyServiceImplementation implements CompanyService {
         companyRepository.save(company);
     }
 
+    @Override
+    public Company findCompanyFromUser(User user) {
+        Optional<Company> company = companyRepository.findById(user.getCompanyId());
+        return company.orElse(null);
+    }
+
 
 }

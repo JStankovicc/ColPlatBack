@@ -1,6 +1,5 @@
-package com.ColPlat.Backend.model.entity;
+package com.ColPlat.Backend.model.dto.request;
 
-import com.ColPlat.Backend.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @Builder

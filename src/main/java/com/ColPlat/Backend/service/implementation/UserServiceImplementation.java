@@ -1,11 +1,16 @@
 package com.ColPlat.Backend.service.implementation;
 
 import com.ColPlat.Backend.model.dto.request.UserRequest;
+import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
+import com.ColPlat.Backend.service.CompanyService;
 import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.UserService;
+import com.ColPlat.Backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,14 +20,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
+
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -85,5 +93,16 @@ public class UserServiceImplementation implements UserService {
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<User> findAllByCompany(Long companyId) {
+        return userRepository.findAllByCompanyId(companyId);
+    }
+
 
 }
