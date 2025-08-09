@@ -35,7 +35,7 @@ public class CalendarEventServiceImplementation implements CalendarEventService 
         User user = userService.findByEmail(username);
         
         List<CalendarEvent> events = calendarEventRepository.findUserEvents(
-            user.getId(), request.getStartDate(), request.getEndDate());
+            user.getId());
         
         return events.stream()
             .map(this::convertToResponse)
@@ -45,7 +45,7 @@ public class CalendarEventServiceImplementation implements CalendarEventService 
     @Override
     public List<CalendarEventResponse> getTeamEvents(String token, Long teamId, 
                                                    LocalDateTime startDate, LocalDateTime endDate) {
-        List<CalendarEvent> events = calendarEventRepository.findTeamEvents(teamId, startDate, endDate);
+        List<CalendarEvent> events = calendarEventRepository.findTeamEvents(teamId);
         
         return events.stream()
             .map(this::convertToResponse)

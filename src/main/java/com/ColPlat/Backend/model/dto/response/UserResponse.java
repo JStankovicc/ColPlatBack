@@ -14,4 +14,5 @@ public class UserResponse {
     private Long id;
     private String displayName;
     private byte[] profilePic;
+
 }

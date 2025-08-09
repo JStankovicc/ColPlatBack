@@ -16,20 +16,13 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, Lo
             "LEFT JOIN ce.participants ep " +
             "WHERE (ce.createdByUserId = :userId OR ep.userId = :userId) " +
             "AND ce.startDateTime <= :endDate AND ce.endDateTime >= :startDate")
-    List<CalendarEvent> findUserEvents(@Param("userId") Long userId,
-                                       @Param("startDate") LocalDateTime startDate,
-                                       @Param("endDate") LocalDateTime endDate);
+    List<CalendarEvent> findUserEvents(@Param("userId") Long userId);
 
-    // Nalazi samo događaje koje je korisnik kreirao
     @Query("SELECT ce FROM CalendarEvent ce WHERE ce.createdByUserId = :userId " +
             "AND ce.startDateTime <= :endDate AND ce.endDateTime >= :startDate")
-    List<CalendarEvent> findCreatedByUserEvents(@Param("userId") Long userId,
-                                                @Param("startDate") LocalDateTime startDate,
-                                                @Param("endDate") LocalDateTime endDate);
+    List<CalendarEvent> findCreatedByUserEvents(@Param("userId") Long userId);
 
     @Query("SELECT ce FROM CalendarEvent ce WHERE ce.teamId = :teamId " +
             "AND ce.startDateTime <= :endDate AND ce.endDateTime >= :startDate")
-    List<CalendarEvent> findTeamEvents(@Param("teamId") Long teamId,
-                                       @Param("startDate") LocalDateTime startDate,
-                                       @Param("endDate") LocalDateTime endDate);
+    List<CalendarEvent> findTeamEvents(@Param("teamId") Long teamId);
 }

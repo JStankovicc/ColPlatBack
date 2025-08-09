@@ -6,7 +6,4 @@ import java.time.LocalDateTime;
 
 @Data
 public class CalendarViewRequest {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Long teamId;
 }
