@@ -32,6 +32,8 @@ public class DataLoader {
     private final RegionRepository regionRepository;
     private final CityRepository cityRepository;
     private final LocationRepository locationRepository;
+    private final DepartmentRepository departmentRepository; // Dodato
+    private final TeamRepository teamRepository; // Dodato
 
     // Dodati repository-je za kalendarske funkcionalnosti
     private final CalendarEventRepository calendarEventRepository;
@@ -43,19 +45,19 @@ public class DataLoader {
 
     @PostConstruct
     public void addUserData(){
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.ADMIN);
-        roles.add(Role.SALES_MANAGEMENT);
-        roles.add(Role.SALES);
-        roles.add(Role.PROJECT_MANAGEMENT);
-        roles.add(Role.PROJECT);
-        User user = new User(1L,"j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,roles,true,true,true, LocalDateTime.now(),LocalDateTime.now());
-        userRepository.save(user);
+        Set<Role> rolesAdmin = new HashSet<>();
+        rolesAdmin.add(Role.ADMIN);
+        rolesAdmin.add(Role.SALES_MANAGEMENT);
+        rolesAdmin.add(Role.SALES);
+        rolesAdmin.add(Role.PROJECT_MANAGEMENT);
+        rolesAdmin.add(Role.PROJECT);
+        User user1 = new User(1L,"j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,rolesAdmin,true,true,true, LocalDateTime.now(),LocalDateTime.now());
+        userRepository.save(user1);
 
         byte[] defaultProfilePic = null;
 
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
-        //try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/testSpiderman.png")) {
+            //try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/testSpiderman.png")) {
             if (inputStream != null) {
                 defaultProfilePic = inputStream.readAllBytes();
             } else {
@@ -66,8 +68,88 @@ public class DataLoader {
             throw new RuntimeException("Greška prilikom učitavanja slike!");
         }
 
-        UserProfile userProfile = new UserProfile(1L,"Jovan Stankovic", "Jovan", "Stankovic",defaultProfilePic,1L, LocalDateTime.now(),LocalDateTime.now());
-        userProfileRepository.save(userProfile);
+        UserProfile userProfile1 = new UserProfile(1L,"Jovan Stankovic", "Jovan", "Stankovic",defaultProfilePic,1L, LocalDateTime.now(),LocalDateTime.now());
+        userProfileRepository.save(userProfile1);
+    }
+
+    @PostConstruct
+    public void addMoreMockUsers() {
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        // Dodavanje Koste Markovica
+        Set<Role> rolesKosta = new HashSet<>();
+        rolesKosta.add(Role.PROJECT_MANAGEMENT);
+        rolesKosta.add(Role.PROJECT);
+        rolesKosta.add(Role.SALES);
+        rolesKosta.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile2 = new UserProfile(2L, "Kosta Markovic", "Kosta", "Markovic", defaultProfilePic, 1L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile2);
+
+        User user2 = new User(2L, "kosta.markovic@mockcompany.com", passwordEncoder.encode("123"), 1L, userProfile2.getId(), rolesKosta, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user2);
+
+// Dodavanje Nikole Milovanovica
+        Set<Role> rolesNikola = new HashSet<>();
+        rolesNikola.add(Role.SALES);
+
+        UserProfile userProfile3 = new UserProfile(3L, "Nikola Milovanovic", "Nikola", "Milovanovic", defaultProfilePic, 1L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(3L, "nikola.milovanovic@mockcompany.com", passwordEncoder.encode("123"), 1L, userProfile3.getId(), rolesNikola, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+
+    }
+
+    @PostConstruct
+    public void addMockDepartmentsAndTeams() {
+        // Kreiranje Department-a
+        Department salesDepartment = new Department();
+        salesDepartment.setId(1L);
+        salesDepartment.setDepartmentType(DepartmentType.SALES);
+        salesDepartment.setCompanyId(1L);
+        departmentRepository.save(salesDepartment);
+
+        Department developmentDepartment = new Department();
+        developmentDepartment.setId(2L);
+        developmentDepartment.setDepartmentType(DepartmentType.PROJECT);
+        developmentDepartment.setCompanyId(1L);
+        departmentRepository.save(developmentDepartment);
+
+        // Kreiranje Timova
+        Team salesTeam = new Team();
+        salesTeam.setName("Sales Team A");
+        salesTeam.setDescription("Tim zadužen za akviziciju novih klijenata");
+        salesTeam.setCompanyId(1L);
+        salesTeam.setDepartment(salesDepartment);
+        salesTeam.setUserIds(new HashSet<>(Arrays.asList(1L, 2L))); // Jovan Stankovic (1L) i Nikola Milovanovic (3L)
+        teamRepository.save(salesTeam);
+
+        Team devTeam = new Team();
+        devTeam.setName("Development Team B");
+        devTeam.setDescription("Tim zadužen za razvoj i održavanje glavnog proizvoda");
+        devTeam.setCompanyId(1L);
+        devTeam.setDepartment(developmentDepartment);
+        devTeam.setUserIds(new HashSet<>(Arrays.asList(3L))); // Kosta Markovic (2L)
+        teamRepository.save(devTeam);
+
+        Team devTeamAlpha = new Team();
+        devTeamAlpha.setName("Development Team Alpha");
+        devTeamAlpha.setDescription("Tim zadužen za istraživanje i razvoj (R&D)");
+        devTeamAlpha.setCompanyId(1L);
+        devTeamAlpha.setDepartment(developmentDepartment);
+        devTeamAlpha.setUserIds(new HashSet<>()); // Prazan tim za sada
+        teamRepository.save(devTeamAlpha);
     }
 
     @PostConstruct

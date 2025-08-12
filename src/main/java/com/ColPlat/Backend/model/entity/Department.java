@@ -20,7 +20,7 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private DepartmentType departmentType;
     private Long companyId;

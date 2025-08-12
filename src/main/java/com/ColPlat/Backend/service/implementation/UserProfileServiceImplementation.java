@@ -34,6 +34,11 @@ public class UserProfileServiceImplementation implements UserProfileService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public UserProfile getUserProfileById(Long id) {
+        return userProfileRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public UserProfileResponse getUserProfileFromToken(String token) {
         String username = jwtService.extractUserName(token);
         User user = userService.findByEmail(username);
