@@ -6,6 +6,9 @@ import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
 
 public interface CompanyService {
+
+    Company getCompanyFromToken(String token);
+
     CompanyResponse getCompanyInfoFromToken(String token);
 
     CompanySettingsInfoResponse getCompanySettingsInfoFromToken(String token);

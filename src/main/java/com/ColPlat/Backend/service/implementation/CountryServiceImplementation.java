@@ -16,7 +16,7 @@ public class CountryServiceImplementation implements CountryService {
     private final CountryRepository countryRepository;
 
     @Override
-    public Country getCounytryById(Short id) {
+    public Country getCountryById(Short id) {
         Optional<Country> countryOptional = countryRepository.findById(id);
         return countryOptional.orElse(null);
     }

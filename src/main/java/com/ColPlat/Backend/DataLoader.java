@@ -1,10 +1,7 @@
 package com.ColPlat.Backend;
 
 import com.ColPlat.Backend.model.entity.*;
-import com.ColPlat.Backend.model.enums.EventPriority;
-import com.ColPlat.Backend.model.enums.ParticipationStatus;
-import com.ColPlat.Backend.model.enums.Role;
-import com.ColPlat.Backend.model.enums.SupportType;
+import com.ColPlat.Backend.model.enums.*;
 import com.ColPlat.Backend.repository.*;
 import com.sun.tools.javac.Main;
 import jakarta.annotation.PostConstruct;
@@ -35,10 +32,14 @@ public class DataLoader {
     private final RegionRepository regionRepository;
     private final CityRepository cityRepository;
     private final LocationRepository locationRepository;
-    
+
     // Dodati repository-je za kalendarske funkcionalnosti
     private final CalendarEventRepository calendarEventRepository;
     private final EventParticipantRepository eventParticipantRepository;
+
+    // Repository-ji za kontakte
+    private final ContactRepository contactRepository;
+    private final ContactListRepository contactListRepository;
 
     @PostConstruct
     public void addUserData(){
@@ -117,8 +118,7 @@ public class DataLoader {
     @PostConstruct
     public void addMockCalendarEvents(){
         LocalDateTime now = LocalDateTime.now();
-        
-        // Event 1 - Sastanak sa klijentom
+
         CalendarEvent event1 = CalendarEvent.builder()
             .id(1L)
             .title("Sastanak sa klijentom ABC")
@@ -132,7 +132,6 @@ public class DataLoader {
             .build();
         calendarEventRepository.save(event1);
 
-        // Event 2 - Tim meeting
         CalendarEvent event2 = CalendarEvent.builder()
             .id(2L)
             .title("Nedeljni tim meeting")
@@ -146,7 +145,6 @@ public class DataLoader {
             .build();
         calendarEventRepository.save(event2);
 
-        // Event 3 - Obuka zaposlenih
         CalendarEvent event3 = CalendarEvent.builder()
             .id(3L)
             .title("Obuka - Nova tehnologija")
@@ -160,7 +158,6 @@ public class DataLoader {
             .build();
         calendarEventRepository.save(event3);
 
-        // Event 4 - Projektni deadline
         CalendarEvent event4 = CalendarEvent.builder()
             .id(4L)
             .title("Deadline - Projekt XYZ")
@@ -174,7 +171,6 @@ public class DataLoader {
             .build();
         calendarEventRepository.save(event4);
 
-        // Event 5 - Lični event
         CalendarEvent event5 = CalendarEvent.builder()
             .id(5L)
             .title("Privatni sastanak")
@@ -188,7 +184,6 @@ public class DataLoader {
             .build();
         calendarEventRepository.save(event5);
 
-        // Event 6 - Prošli event
         CalendarEvent event6 = CalendarEvent.builder()
             .id(6L)
             .title("Završen sastanak")
@@ -277,6 +272,135 @@ public class DataLoader {
                     .status(ParticipationStatus.ACCEPTED)
                     .build();
             eventParticipantRepository.save(participant6);
+        }
+    }
+
+    @PostConstruct
+    public void addMockContactsLists() {
+        // Create mock contacts lists
+        ContactsList list1 = ContactsList.builder()
+                .id(1L)
+                .name("Potencijalni klijenti")
+                .description("Lista potencijalnih klijenata za kontaktiranje")
+                .companyId(1L) // MockCompany
+                .teamId(1L)    // Assuming team ID 1 exists
+                .countryId((short) 1) // Srbija
+                .regionId(1)  // Beograd
+                .cityId(1)    // Grad Beograd
+                .contacts(new ArrayList<>())
+                .status(ContactsListStatus.LEAD)
+                .build();
+        contactListRepository.save(list1);
+
+        ContactsList list2 = ContactsList.builder()
+                .id(2L)
+                .name("Aktivni klijenti")
+                .description("Lista trenutno aktivnih klijenata")
+                .companyId(1L) // MockCompany
+                .teamId(1L)    // Assuming team ID 1 exists
+                .countryId((short) 1) // Srbija
+                .regionId(2)  // Raski okrug
+                .cityId(2)    // Kraljevo
+                .contacts(new ArrayList<>())
+                .status(ContactsListStatus.CLIENT)
+                .build();
+        contactListRepository.save(list2);
+
+        ContactsList list3 = ContactsList.builder()
+                .id(3L)
+                .name("Arhivirani klijenti")
+                .description("Lista klijenata sa kojima trenutno ne sarađujemo")
+                .companyId(1L) // MockCompany
+                .teamId(1L)    // Assuming team ID 1 exists
+                .countryId((short) 1) // Srbija
+                .regionId(1)  // Beograd
+                .cityId(1)    // Grad Beograd
+                .contacts(new ArrayList<>())
+                .status(ContactsListStatus.LEAD)
+                .build();
+        contactListRepository.save(list3);
+    }
+
+    @PostConstruct
+    public void addMockContacts() {
+        // Get contacts lists from repository
+        ContactsList list1 = contactListRepository.findById(1L).orElse(null);
+        ContactsList list2 = contactListRepository.findById(2L).orElse(null);
+        ContactsList list3 = contactListRepository.findById(3L).orElse(null);
+
+        if (list1 != null) {
+            // Add contacts to "Potencijalni klijenti" list
+            Contact contact1 = Contact.builder()
+                    .id(1L)
+                    .name("Marko Petrović")
+                    .companyName("Tech Solutions d.o.o.")
+                    .phoneNumber("+381601234567")
+                    .email("marko.petrovic@techsolutions.rs")
+                    .contactsList(list1)
+                    .status(ContactStatus.NEW)
+                    .build();
+            contactRepository.save(contact1);
+
+            Contact contact2 = Contact.builder()
+                    .id(2L)
+                    .name("Ana Jovanović")
+                    .companyName("Digital Media Group")
+                    .phoneNumber("+381642345678")
+                    .email("ana.jovanovic@dmg.com")
+                    .contactsList(list1)
+                    .status(ContactStatus.CONTACTED)
+                    .build();
+            contactRepository.save(contact2);
+        }
+
+        if (list2 != null) {
+            // Add contacts to "Aktivni klijenti" list
+            Contact contact3 = Contact.builder()
+                    .id(3L)
+                    .name("Nikola Đorđević")
+                    .companyName("Smart Systems")
+                    .phoneNumber("+381653456789")
+                    .email("nikola.djordjevic@smartsystems.rs")
+                    .contactsList(list2)
+                    .status(ContactStatus.OFFERED)
+                    .build();
+            contactRepository.save(contact3);
+
+            Contact contact4 = Contact.builder()
+                    .id(4L)
+                    .name("Jelena Nikolić")
+                    .companyName("Inovation Hub")
+                    .phoneNumber("+381664567890")
+                    .email("jelena.nikolic@ihub.rs")
+                    .contactsList(list2)
+                    .status(ContactStatus.CLOSED)
+                    .build();
+            contactRepository.save(contact4);
+        }
+
+        if (list3 != null) {
+            // Add contacts to "Arhivirani klijenti" list
+            Contact contact5 = Contact.builder()
+                    .id(5L)
+                    .name("Milan Stanković")
+                    .companyName("Old Tech Ltd.")
+                    .phoneNumber("+381675678901")
+                    .email("milan.stankovic@oldtech.com")
+                    .contactsList(list3)
+                    .status(ContactStatus.STALLED)
+                    .build();
+            contactRepository.save(contact5);
+
+            Contact contact6 = Contact.builder()
+                    .id(6L)
+                    .name("Jovana Pavlović")
+                    .companyName("Former Partners Inc.")
+                    .phoneNumber("+381686789012")
+                    .email("jovana.pavlovic@formerpartners.com")
+                    .contactsList(list3)
+                    .status(ContactStatus.REJECTED)
+                    .build();
+            contactRepository.save(contact6);
         }
     }
 }

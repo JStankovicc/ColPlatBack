@@ -25,6 +25,17 @@ public class CompanyServiceImplementation implements CompanyService {
     private final CityService cityService;
 
     @Override
+    public Company getCompanyFromToken(String token){
+        String email = jwtService.extractUserName(token);
+        User user = userService.findByEmail(email);
+        Optional<Company> company = companyRepository.findById(user.getCompanyId());
+        if(company.isPresent()) {
+            return company.get();
+        }
+        return null;
+    }
+
+    @Override
     public CompanyResponse getCompanyInfoFromToken(String token) {
         String email = jwtService.extractUserName(token);
         User user = userService.findByEmail(email);
@@ -55,7 +66,7 @@ public class CompanyServiceImplementation implements CompanyService {
             Location location = locationService.getLocationById(companyData.getLocationId());
             City city = cityService.getCityById(location.getCityId());
             Region region = regionService.getRegionById(city.getRegionId());
-            Country country = countryService.getCounytryById(region.getCountryId());
+            Country country = countryService.getCountryById(region.getCountryId());
 
 
             try {

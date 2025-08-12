@@ -45,7 +45,7 @@ public class RegionServiceImplementation implements RegionService {
     public Integer findRegionId(String country, String region) {
         short countryId = countryService.findCountryId(country);
         if(countryId != 0){
-            Country country1 = countryService.getCounytryById(countryId);
+            Country country1 = countryService.getCountryById(countryId);
             if(country1 != null){
                 Optional<Region> regionOptional = regionRepository.findByCountryIdAndName(countryId, region);
                 if(regionOptional.isPresent()){

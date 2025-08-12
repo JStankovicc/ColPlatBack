@@ -5,7 +5,7 @@ import com.ColPlat.Backend.model.entity.Country;
 import java.util.List;
 
 public interface CountryService {
-    Country getCounytryById(Short id);
+    Country getCountryById(Short id);
 
     List<String> getAllCountriesNames();
 
