@@ -1,9 +1,9 @@
 package com.ColPlat.Backend.repository;
 
-import com.ColPlat.Backend.model.entity.Company;
+import com.ColPlat.Backend.model.entity.TaskNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CompanyRepository extends JpaRepository<Company, Long> {
+public interface TaskNoteRepository extends JpaRepository<TaskNote, Long> {
 }

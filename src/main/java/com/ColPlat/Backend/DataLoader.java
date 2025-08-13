@@ -34,6 +34,10 @@ public class DataLoader {
     private final LocationRepository locationRepository;
     private final DepartmentRepository departmentRepository; // Dodato
     private final TeamRepository teamRepository; // Dodato
+    private final ProjectRepository projectRepository;
+    private final TaskStatusRepository taskStatusRepository;
+    private final TaskNoteRepository taskNoteRepository;
+    private final ProjectTaskRepository projectTaskRepository;
 
     // Dodati repository-je za kalendarske funkcionalnosti
     private final CalendarEventRepository calendarEventRepository;
@@ -485,4 +489,91 @@ public class DataLoader {
             contactRepository.save(contact6);
         }
     }
+
+    @PostConstruct
+    public void addMockProjectData() {
+        // 1. Kreiraj i sacuvaj projekat
+        Project project = Project.builder()
+                .name("Projekat Alfa")
+                .description("Opis projekta Alfa")
+                .companyId(1L)
+                .teamId(1L)
+                .note("Neki važan note za projekat")
+                .projectTasks(new ArrayList<>())
+                .build();
+        projectRepository.save(project);
+
+        // 2. Ucitaj korisnike (pretpostavljam da postoje)
+        //User user1 = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User 1 nije pronađen"));
+        //User user2 = userRepository.findById(2L).orElseThrow(() -> new RuntimeException("User 2 nije pronađen"));
+
+        User user1 = userRepository.findById(1L).orElse(null);
+        User user2 = userRepository.findById(2L).orElse(null);
+
+        // 3. Kreiraj task 1 i sacuvaj
+        ProjectTask task1 = ProjectTask.builder()
+                .name("Task 1")
+                .description("Opis taska 1")
+                .project(project)
+                .user(user1)
+                .dateDue(new Date(System.currentTimeMillis() + 3 * 24 * 60 * 60 * 1000)) // 3 dana od sad
+                .priority(TaskPriority.HIGH)
+                .status("OPEN")
+                .users(Set.of(user1, user2))
+                .notes(new ArrayList<>())
+                .build();
+        projectTaskRepository.save(task1);
+
+        // 4. Kreiraj task 2 i sacuvaj
+        ProjectTask task2 = ProjectTask.builder()
+                .name("Task 2")
+                .description("Opis taska 2")
+                .project(project)
+                .user(user1)
+                .dateDue(new Date(System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000)) // 5 dana od sad
+                .priority(TaskPriority.NORMAL)
+                .status("IN_PROGRESS")
+                .users(Set.of(user1))
+                .notes(new ArrayList<>())
+                .build();
+        projectTaskRepository.save(task2);
+
+        // 5. Kreiraj note za task1 i sacuvaj ih
+        TaskNote note1 = TaskNote.builder()
+                .note("Napomena 1 za task 1")
+                .userId(user1.getId())
+                .projectTask(task1)
+                .dateTime(new Date())
+                .build();
+        taskNoteRepository.save(note1);
+
+        TaskNote note2 = TaskNote.builder()
+                .note("Napomena 2 za task 1")
+                .userId(user2.getId())
+                .projectTask(task1)
+                .dateTime(new Date())
+                .build();
+        taskNoteRepository.save(note2);
+
+        // 6. Kreiraj TaskStatus-e i sacuvaj ih
+        TaskStatus statusOpen = TaskStatus.builder()
+                .name("OPEN")
+                .projectId(project.getId())
+                .build();
+        taskStatusRepository.save(statusOpen);
+
+        TaskStatus statusInProgress = TaskStatus.builder()
+                .name("IN_PROGRESS")
+                .projectId(project.getId())
+                .build();
+        taskStatusRepository.save(statusInProgress);
+
+        TaskStatus statusClosed = TaskStatus.builder()
+                .name("CLOSED")
+                .projectId(project.getId())
+                .build();
+        taskStatusRepository.save(statusClosed);
+    }
+
+
 }

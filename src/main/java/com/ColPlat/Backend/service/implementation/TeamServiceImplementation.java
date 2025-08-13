@@ -47,7 +47,7 @@ public class TeamServiceImplementation implements TeamService {
                                     User user = userService.findById(userId);
                                     UserProfile profile = userProfileService.getUserProfileById(user.getUserProfileId());
                                     return UserProfileResponse.builder()
-                                            .displayName(profile.getDisplayName())
+                                            .displayName(profile.getDisplayName().isEmpty() ? user.getEmail() : profile.getDisplayName())
                                             .name(profile.getFirstName() + " " + profile.getLastName())
                                             .profilePic(profile.getProfilePic())
                                             .build();
