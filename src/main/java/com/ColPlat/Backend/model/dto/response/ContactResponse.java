@@ -16,4 +16,6 @@ public class ContactResponse {
     private String phoneNumber;
     private String email;
 
+    private String status;
+
 }

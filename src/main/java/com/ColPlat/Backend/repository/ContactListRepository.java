@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ContactListRepository extends JpaRepository<ContactsList, Long> {
     List<ContactsList> findByCompanyIdAndStatus(Long companyId, ContactsListStatus status);
+
+    Collection<ContactsList> findByTeamId(Integer id);
 }

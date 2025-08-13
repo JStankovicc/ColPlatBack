@@ -35,6 +35,6 @@ public class ContactsList {
     @Enumerated(EnumType.STRING)
     private ContactsListStatus status;
 
-    @OneToMany(mappedBy = "contactsList", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contactsList", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Contact> contacts = new ArrayList<>();
 }

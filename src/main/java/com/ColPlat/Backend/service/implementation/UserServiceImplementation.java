@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
 
-
     @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {

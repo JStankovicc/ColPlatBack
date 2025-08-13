@@ -1,12 +1,10 @@
 package com.ColPlat.Backend.controller;
 
 import com.ColPlat.Backend.model.dto.request.ContactsListsRequest;
+import com.ColPlat.Backend.model.dto.response.ContactResponse;
 import com.ColPlat.Backend.model.dto.response.ContactsListResponse;
 import com.ColPlat.Backend.model.enums.ContactsListStatus;
-import com.ColPlat.Backend.service.CompanyService;
-import com.ColPlat.Backend.service.ContactListService;
-import com.ColPlat.Backend.service.JwtService;
-import com.ColPlat.Backend.service.UserService;
+import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +18,9 @@ public class ContactsListController {
 
     private final CompanyService companyService;
     private final ContactListService contactListService;
+    private final ContactService contactService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/lists/all")
     public ResponseEntity<List<ContactsListResponse>> getAllContactsLists(
@@ -40,6 +41,13 @@ public class ContactsListController {
         List<ContactsListResponse> response = contactListService.getCompanyContacts(companyId, request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/sales/all")
+    public ResponseEntity<List<ContactResponse>> getAllSalesContacts(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        return ResponseEntity.ok(contactService.findAllByUserId(userService.findByEmail(jwtService.extractUserName(token)).getId()));
     }
 
 }

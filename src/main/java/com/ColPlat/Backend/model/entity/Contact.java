@@ -38,6 +38,7 @@ public class Contact {
         contactResponse.setCompanyName(companyName);
         contactResponse.setPhoneNumber(phoneNumber);
         contactResponse.setEmail(email);
+        contactResponse.setStatus(status.name());
         return contactResponse;
     }
 
