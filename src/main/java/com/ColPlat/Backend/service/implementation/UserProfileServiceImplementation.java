@@ -5,6 +5,7 @@ import com.ColPlat.Backend.model.dto.request.UserProfileWithPasswordRequest;
 import com.ColPlat.Backend.model.dto.request.UserProfileWithoutPasswordRequest;
 import com.ColPlat.Backend.model.dto.response.JwtAuthenticationResponse;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.repository.UserProfileRepository;
@@ -124,5 +125,15 @@ public class UserProfileServiceImplementation implements UserProfileService {
 
         return authenticationService.signIn(new SignInRequest(request.getEmail(), request.getPassword()));
 
+    }
+
+    @Override
+    public UserResponse getUserResponseFromUser(User u) {
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findById(u.getUserProfileId());
+        if(userProfileOptional.isPresent()){
+            UserProfile userProfile = userProfileOptional.get();
+            return UserResponse.builder().id(u.getId()).displayName(userProfile.getFirstName() + " " + userProfile.getLastName()).profilePic(userProfile.getProfilePic()).build();
+        }
+        return null;
     }
 }
