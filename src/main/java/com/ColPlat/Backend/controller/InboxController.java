@@ -32,6 +32,15 @@ public class InboxController {
     private final JwtService jwtService;
     private final ChatService chatService;
 
+    // Vraća ID trenutnog korisnika
+    @GetMapping("/me")
+    public ResponseEntity<Long> getCurrentUserId(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        String email = jwtService.extractUserName(token);
+        User me = userService.findByEmail(email);
+        return ResponseEntity.ok(me.getId());
+    }
+
     // već imaš ovo – vraća sve korisnike firme:
     @GetMapping("/contacts/all")
     public ResponseEntity<List<UserResponse>> getAllContacts(@RequestHeader("Authorization") String authorizationHeader){

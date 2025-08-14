@@ -45,12 +45,14 @@ public class ChatServiceImplementation implements ChatService {
 
             // (opciono) možeš optimizovati dodatnim upitom koji vraća poslednju poruku po konverzaciji
 
-            Set<Long> participantIds = c.getParticipants().stream()
+            // Dohvati učesnike iz repository jer nisu eager loaded
+            List<ConversationParticipant> participants = participantRepository.findAllByConversation_Id(c.getId());
+            Set<Long> participantIds = participants.stream()
                     .map(ConversationParticipant::getUserId)
                     .collect(Collectors.toSet());
 
             // unread count: jednostavna procena prema lastReadAt
-            int unread = c.getParticipants().stream()
+            int unread = participants.stream()
                     .filter(p -> Objects.equals(p.getUserId(), userId))
                     .findFirst()
                     .map(p -> {
