@@ -1,8 +1,5 @@
 package com.ColPlat.Backend.service.implementation;
 
-// package com.ColPlat.Backend.service.implementation;
-
-
 import com.ColPlat.Backend.model.dto.response.ConversationSummaryResponse;
 import com.ColPlat.Backend.model.dto.response.MessageResponse;
 import com.ColPlat.Backend.model.entity.Conversation;
@@ -16,7 +13,6 @@ import com.ColPlat.Backend.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +27,6 @@ public class ChatServiceImplementation implements ChatService {
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantRepository participantRepository;
     private final MessageRepository messageRepository;
-    private final SimpMessagingTemplate messagingTemplate; // za WebSocket push
 
     @Override
     @Transactional(readOnly = true)
@@ -157,21 +152,12 @@ public class ChatServiceImplementation implements ChatService {
         c.setLastMessageAt(msg.getCreatedAt());
         conversationRepository.save(c);
 
-        MessageResponse payload = toMessageResponse(msg);
+        MessageResponse response = toMessageResponse(msg);
 
-        // push poruku svim klijentima koji su pretplaćeni na thread
-        messagingTemplate.convertAndSend("/topic/thread." + conversationId, payload);
+        // Real-time messaging removed - now only returns HTTP response
+        // Clients will need to poll for new messages or refresh conversations
 
-        // opciono: notifikacija svakom učesniku u inbox feed
-        participantRepository.findAllByConversation_Id(conversationId).forEach(p ->
-                messagingTemplate.convertAndSendToUser(
-                        String.valueOf(p.getUserId()), // user destination
-                        "/queue/inbox",
-                        payload
-                )
-        );
-
-        return payload;
+        return response;
     }
 
     @Override

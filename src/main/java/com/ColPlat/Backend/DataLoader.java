@@ -104,14 +104,14 @@ public class DataLoader {
         userRepository.save(user2);
 
 // Dodavanje Nikole Milovanovica
-        Set<Role> rolesNikola = new HashSet<>();
+        /**Set<Role> rolesNikola = new HashSet<>();
         rolesNikola.add(Role.SALES);
 
         UserProfile userProfile3 = new UserProfile(3L, "Nikola Milovanovic", "Nikola", "Milovanovic", defaultProfilePic, 1L, LocalDateTime.now(), LocalDateTime.now());
         userProfileRepository.save(userProfile3);
 
         User user3 = new User(3L, "nikola.milovanovic@mockcompany.com", passwordEncoder.encode("123"), 1L, userProfile3.getId(), rolesNikola, true, true, true, LocalDateTime.now(), LocalDateTime.now());
-        userRepository.save(user3);
+        userRepository.save(user3);*/
 
     }
 

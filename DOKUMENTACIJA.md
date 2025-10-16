@@ -1564,3 +1564,4 @@ app.jwt.expiration=${JWT_EXPIRATION:86400000}
 ---
 
 *Dokumentacija je ažurirana: Januar 2024*
+
