@@ -27,9 +27,10 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -124,21 +125,31 @@
 
 	</dependencies>
 
+<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>&ndash;&gt;-->
+<!--				<groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>&ndash;&gt;-->
+<!--				<configuration>&ndash;&gt;-->
+<!--					<excludes>&ndash;&gt;-->
+<!--						<exclude>&ndash;&gt;-->
+<!--							<groupId>org.projectlombok</groupId>&ndash;&gt;-->
+<!--							<artifactId>lombok</artifactId>&ndash;&gt;-->
+<!--						</exclude>&ndash;&gt;-->
+<!--					</excludes>&ndash;&gt;-->
+<!--				</configuration>&ndash;&gt;-->
+<!--			</plugin>&ndash;&gt;-->
+<!--		</plugins>-->
+<!--	</build>-->
+
 	<build>
 		<plugins>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<excludes>-->
-<!--						<exclude>-->
-<!--							<groupId>org.projectlombok</groupId>-->
-<!--							<artifactId>lombok</artifactId>-->
-<!--						</exclude>-->
-<!--					</excludes>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

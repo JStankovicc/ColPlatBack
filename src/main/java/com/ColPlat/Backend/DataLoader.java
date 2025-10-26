@@ -51,7 +51,7 @@ public class DataLoader {
     private final ContactRepository contactRepository;
     private final ContactListRepository contactListRepository;
 
-    @PostConstruct
+    //@PostConstruct
     @Transactional
     public void executeDataLoader() {
         addUserData();
