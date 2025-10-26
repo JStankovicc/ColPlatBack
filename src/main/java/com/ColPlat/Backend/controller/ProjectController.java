@@ -3,6 +3,7 @@ package com.ColPlat.Backend.controller;
 import com.ColPlat.Backend.model.dto.request.ProjectCreateRequest;
 import com.ColPlat.Backend.model.dto.request.ProjectNoteUpdateRequest;
 import com.ColPlat.Backend.model.dto.request.ProjectTaskUpdateRequest;
+import com.ColPlat.Backend.model.dto.request.TaskStatusRequest;
 import com.ColPlat.Backend.model.dto.response.ProjectInfoResponse;
 import com.ColPlat.Backend.model.dto.response.ProjectResponse;
 import com.ColPlat.Backend.model.entity.*;
@@ -28,18 +29,37 @@ public class ProjectController {
     private final JwtService jwtService;
 
     @GetMapping("/tasks/my")
-    public ResponseEntity<List<ProjectTask>> getMyTasks(@RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<List<ProjectTask>> getMyTasks(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
         String token = authorizationHeader.replace("Bearer ", "");
 
-        return ResponseEntity.ok(projectTaskService.getUserTasks(userService.findByEmail(jwtService.extractUserName(token)).getId()));
+        return ResponseEntity.ok(projectTaskService.getUserTasks(projectService.getProjectById(projectId), userService.findByEmail(jwtService.extractUserName(token)).getId()));
     }
 
     @GetMapping("/taskStatus/getAll")
-    public ResponseEntity<List<TaskStatus>> getAllTaskStatuses(@RequestHeader("Authorization") String authorizationHeader){
+    public ResponseEntity<List<TaskStatus>> getAllTaskStatuses(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
 
         String token = authorizationHeader.replace("Bearer ", "");
 
         return ResponseEntity.ok(taskStatusService.getAllForProject(1L));
+    }
+
+    @DeleteMapping("/deleteTaskStatus")
+    public ResponseEntity<String> deleteTaskStatus(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("id") Long id){
+        taskStatusService.deleteById(id);
+        return ResponseEntity.ok("Uspesno obrisan status za task");
+    }
+
+    @PostMapping("/addTaskStatus")
+    public ResponseEntity<String> addTaskStatus(@RequestHeader("Authorization") String authorizationHeader, @RequestBody TaskStatusRequest taskStatus){
+        taskStatusService.addFromRequest(taskStatus);
+        return ResponseEntity.ok("Uspesno dodat status za task");
+
+    }
+
+    @PostMapping("/updateTaskStatus")
+    public ResponseEntity<String> updateTaskStatus(@RequestHeader("Authorization") String authorizationHeader, @RequestBody TaskStatus taskStatus){
+        taskStatusService.updateTaskStatus(taskStatus);
+        return ResponseEntity.ok("Uspesno azurirano");
     }
 
     @PostMapping("/add")
@@ -117,9 +137,6 @@ public class ProjectController {
 
         try {
             String token = authorizationHeader.replace("Bearer ", "");
-            System.out.println("=== updateProjectTask called ===");
-            System.out.println("Task ID: " + request.getId());
-            System.out.println("New status: " + request.getStatus());
 
             ProjectTask task = projectTaskService.getTaskById(request.getId());
             if (task == null) {
@@ -131,7 +148,7 @@ public class ProjectController {
             task.setDescription(request.getDescription());
             task.setDateDue(request.getDateDue());
             task.setPriority(request.getPriority());
-            task.setStatus(request.getStatus());
+            task.setStatusId(request.getStatusId());
 
             projectTaskService.save(task);
 

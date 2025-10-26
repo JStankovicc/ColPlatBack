@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.entity.Project;
 import com.ColPlat.Backend.model.entity.ProjectTask;
 import com.ColPlat.Backend.repository.ProjectTaskRepository;
 import com.ColPlat.Backend.service.ProjectTaskService;
@@ -15,8 +16,8 @@ public class ProjectTaskServiceImplementation implements ProjectTaskService {
     private final ProjectTaskRepository projectTaskRepository;
 
     @Override
-    public List<ProjectTask> getUserTasks(Long id) {
-        return projectTaskRepository.findAllByUserId(id);
+    public List<ProjectTask> getUserTasks(Project project, Long id) {
+        return projectTaskRepository.findAllByProjectAndUserId(project,id);
     }
 
     @Override
@@ -28,4 +29,5 @@ public class ProjectTaskServiceImplementation implements ProjectTaskService {
     public void save(ProjectTask task) {
         projectTaskRepository.save(task);
     }
+
 }

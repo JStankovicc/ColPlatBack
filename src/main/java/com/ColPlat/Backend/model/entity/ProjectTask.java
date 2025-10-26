@@ -45,7 +45,7 @@ public class ProjectTask {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
-    private String status;
+    private Long statusId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -19,6 +19,6 @@ public class ProjectTaskUpdateRequest {
     private Long projectId;
     private Date dateDue;
     private TaskPriority priority;
-    private String status;
+    private Long statusId;
     private Long userId;
 }

@@ -60,6 +60,7 @@ public class DataLoader {
         addMockCompany();
         addMockDepartmentsAndTeams();
 
+        addMockProjectTaskStatusData();
         addMockProjectData();
 
         addMockLocation();
@@ -505,6 +506,31 @@ public class DataLoader {
         }
     }
 
+    public void addMockProjectTaskStatusData(){
+        TaskStatus projectTaskStatus = new TaskStatus().builder()
+                .id(1L)
+                .name("OPEN")
+                .projectId(1L)
+                .build();
+
+        taskStatusRepository.save(projectTaskStatus);
+
+        projectTaskStatus.setId(2L);
+        projectTaskStatus.setName("IN PROGRESS");
+
+        taskStatusRepository.save(projectTaskStatus);
+
+        projectTaskStatus.setId(3L);
+        projectTaskStatus.setName("CLOSED");
+
+        taskStatusRepository.save(projectTaskStatus);
+
+        projectTaskStatus.setId(4L);
+        projectTaskStatus.setName("DONE");
+
+        taskStatusRepository.save(projectTaskStatus);
+    }
+
     public void addMockProjectData(){
 
         User user1 = userRepository.findById(1L).orElse(null);
@@ -537,7 +563,7 @@ public class DataLoader {
                 .user(user1)
                 .dateDue(new Date(System.currentTimeMillis() + 3 * 24 * 60 * 60 * 1000)) // 3 dana od sad
                 .priority(TaskPriority.HIGH)
-                .status("OPEN")
+                .statusId(1L)
                 .users(Set.of(user1, user2))
                 .notes(new ArrayList<>())
                 .build();
@@ -551,7 +577,7 @@ public class DataLoader {
                 .user(user1)
                 .dateDue(new Date(System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000)) // 5 dana od sad
                 .priority(TaskPriority.NORMAL)
-                .status("IN_PROGRESS")
+                .statusId(3L)
                 .users(Set.of(user1))
                 .notes(new ArrayList<>())
                 .build();
@@ -574,24 +600,6 @@ public class DataLoader {
                 .build();
         taskNoteRepository.save(note2);
 
-        // 6. Kreiraj TaskStatus-e i sacuvaj ih
-        TaskStatus statusOpen = TaskStatus.builder()
-                .name("OPEN")
-                .projectId(project.getId())
-                .build();
-        taskStatusRepository.save(statusOpen);
-
-        TaskStatus statusInProgress = TaskStatus.builder()
-                .name("IN_PROGRESS")
-                .projectId(project.getId())
-                .build();
-        taskStatusRepository.save(statusInProgress);
-
-        TaskStatus statusClosed = TaskStatus.builder()
-                .name("CLOSED")
-                .projectId(project.getId())
-                .build();
-        taskStatusRepository.save(statusClosed);
     }
 
 
