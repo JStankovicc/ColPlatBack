@@ -1,4 +1,4 @@
-package com.ColPlat.Backend.model.entity;
+package com.ColPlat.Backend.model.dto.request;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

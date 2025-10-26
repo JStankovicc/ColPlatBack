@@ -6,11 +6,15 @@ import com.ColPlat.Backend.repository.*;
 import com.sun.tools.javac.Main;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,6 +52,25 @@ public class DataLoader {
     private final ContactListRepository contactListRepository;
 
     @PostConstruct
+    @Transactional
+    public void executeDataLoader() {
+        addUserData();
+        addMoreMockUsers();
+
+        addMockCompany();
+        addMockDepartmentsAndTeams();
+
+        addMockProjectData();
+
+        addMockLocation();
+
+        addMockCalendarEvents();
+        addMockEventParticipants();
+
+        addMockContacts();
+        addMockContactsLists();
+    }
+
     public void addUserData(){
         Set<Role> rolesAdmin = new HashSet<>();
         rolesAdmin.add(Role.ADMIN);
@@ -76,7 +99,6 @@ public class DataLoader {
         userProfileRepository.save(userProfile1);
     }
 
-    @PostConstruct
     public void addMoreMockUsers() {
         byte[] defaultProfilePic = null;
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
@@ -115,7 +137,6 @@ public class DataLoader {
 
     }
 
-    @PostConstruct
     public void addMockDepartmentsAndTeams() {
         // Kreiranje Department-a
         Department salesDepartment = new Department();
@@ -156,7 +177,6 @@ public class DataLoader {
         teamRepository.save(devTeamAlpha);
     }
 
-    @PostConstruct
     public void addMockCompany(){
         byte[] defaultLogo = null;
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/mockCompanyLogo.png")) {
@@ -180,7 +200,6 @@ public class DataLoader {
         companyRepository.save(company);
     }
 
-    @PostConstruct
     public void addMockLocation(){
         Country country = new Country((short) 1,"Srbija");
         countryRepository.save(country);
@@ -201,7 +220,6 @@ public class DataLoader {
         locationRepository.save(location);
     }
 
-    @PostConstruct
     public void addMockCalendarEvents(){
         LocalDateTime now = LocalDateTime.now();
 
@@ -284,7 +302,6 @@ public class DataLoader {
         calendarEventRepository.save(event6);
     }
 
-    @PostConstruct
     public void addMockEventParticipants(){
         // Prvo učitavamo event-ove iz baze
         CalendarEvent event1 = calendarEventRepository.findById(1L).orElse(null);
@@ -361,7 +378,6 @@ public class DataLoader {
         }
     }
 
-    @PostConstruct
     public void addMockContactsLists() {
         // Create mock contacts lists
         ContactsList list1 = ContactsList.builder()
@@ -407,7 +423,6 @@ public class DataLoader {
         contactListRepository.save(list3);
     }
 
-    @PostConstruct
     public void addMockContacts() {
         // Get contacts lists from repository
         ContactsList list1 = contactListRepository.findById(1L).orElse(null);
@@ -490,8 +505,11 @@ public class DataLoader {
         }
     }
 
-    @PostConstruct
-    public void addMockProjectData() {
+    public void addMockProjectData(){
+
+        User user1 = userRepository.findById(1L).orElse(null);
+        User user2 = userRepository.findById(2L).orElse(null);
+
         // 1. Kreiraj i sacuvaj projekat
         Project project = Project.builder()
                 .name("Projekat Alfa")
@@ -499,7 +517,9 @@ public class DataLoader {
                 .companyId(1L)
                 .teamId(1L)
                 .note("Neki važan note za projekat")
+                .startDate(Date.from(Instant.now()))
                 .projectTasks(new ArrayList<>())
+                .users(Set.of(user1))
                 .build();
         projectRepository.save(project);
 
@@ -507,8 +527,7 @@ public class DataLoader {
         //User user1 = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User 1 nije pronađen"));
         //User user2 = userRepository.findById(2L).orElseThrow(() -> new RuntimeException("User 2 nije pronađen"));
 
-        User user1 = userRepository.findById(1L).orElse(null);
-        User user2 = userRepository.findById(2L).orElse(null);
+
 
         // 3. Kreiraj task 1 i sacuvaj
         ProjectTask task1 = ProjectTask.builder()

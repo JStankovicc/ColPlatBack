@@ -1,5 +1,7 @@
-package com.ColPlat.Backend.model.entity;
+package com.ColPlat.Backend.model.dto.response;
 
+import com.ColPlat.Backend.model.entity.ProjectTask;
+import com.ColPlat.Backend.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,21 +19,15 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "_project")
-public class Project {
+public class ProjectResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String description;
-    private Long companyId;
+    private CompanyResponse company;
     private Long teamId;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
     private List<ProjectTask> projectTasks;
 
     //project event
@@ -40,20 +36,11 @@ public class Project {
 
     //notifications
 
-    @CreationTimestamp
     private Date createdAt;
 
-    @UpdateTimestamp
     private Date updatedAt;
 
     private Date startDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "_project_users",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users;
+    private Set<UserResponse> users;
 }
-

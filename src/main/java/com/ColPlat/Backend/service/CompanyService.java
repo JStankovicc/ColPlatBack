@@ -18,4 +18,6 @@ public interface CompanyService {
     void replaceLogo(Company company, byte[] imageBytes);
 
     Company findCompanyFromUser(User user);
+
+    CompanyResponse getCompanyResponseFromCompanyId(Long id);
 }

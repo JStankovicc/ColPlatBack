@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompanyResponse {
 
+    private Long id;
+
     private String companyName;
     private byte[] logoPic;
 

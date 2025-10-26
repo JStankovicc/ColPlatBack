@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.model.entity;
 
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;

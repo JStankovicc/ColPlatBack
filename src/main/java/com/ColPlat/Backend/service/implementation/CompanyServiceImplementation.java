@@ -111,5 +111,18 @@ public class CompanyServiceImplementation implements CompanyService {
         return company.orElse(null);
     }
 
+    @Override
+    public CompanyResponse getCompanyResponseFromCompanyId(Long id) {
+        Company company = companyRepository.findById(id).orElse(null);
+        if(company != null){
+            try {
+                return company.getCompanyResponse();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+
 
 }

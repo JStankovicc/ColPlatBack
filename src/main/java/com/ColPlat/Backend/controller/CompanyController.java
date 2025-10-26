@@ -2,12 +2,13 @@ package com.ColPlat.Backend.controller;
 
 import com.ColPlat.Backend.model.dto.response.CompanyResponse;
 import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
+import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.model.enums.SupportType;
-import com.ColPlat.Backend.service.CompanyService;
-import com.ColPlat.Backend.service.JwtService;
-import com.ColPlat.Backend.service.UserService;
+import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/company")
@@ -22,7 +24,9 @@ import java.util.List;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final ProjectService projectService;
     private final UserService userService;
+    private final UserProfileService userProfileService;
     private final JwtService jwtService;
 
     @GetMapping("/getCompanyInfo")
@@ -62,5 +66,31 @@ public class CompanyController {
             types.add(s.toString());
         }
         return ResponseEntity.ok(types);
+    }
+
+    @GetMapping("/getAllCompanyProjectWorkersNotOnProject")
+    public ResponseEntity<List<UserResponse>> getAllCompanyProjectWorkersNotOnProject(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        Company company = companyService.getCompanyFromToken(token);
+
+        List<User> users = projectService.getAllProjectUsers(projectId);
+
+        List<User> allUsers = userService.findAllByCompany(company.getId());
+
+        for (User user : users){
+            allUsers.removeIf(allUser -> Objects.equals(user.getId(), allUser.getId()));
+        }
+
+        List<UserResponse> userResponses = new ArrayList<>();
+
+        for (User user : allUsers){
+            userResponses.add(userProfileService.getUserResponseFromUser(user));
+        }
+
+        return ResponseEntity.ok(userResponses);
+
+
     }
 }

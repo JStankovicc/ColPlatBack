@@ -9,6 +9,7 @@ import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
 import com.ColPlat.Backend.service.CompanyService;
 import com.ColPlat.Backend.service.JwtService;
+import com.ColPlat.Backend.service.UserProfileService;
 import com.ColPlat.Backend.service.UserService;
 import com.ColPlat.Backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
-
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -103,6 +103,8 @@ public class UserServiceImplementation implements UserService {
     public List<User> findAllByCompany(Long companyId) {
         return userRepository.findAllByCompanyId(companyId);
     }
+
+
 
 
 }

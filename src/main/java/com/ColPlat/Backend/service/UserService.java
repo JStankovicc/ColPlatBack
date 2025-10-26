@@ -26,4 +26,5 @@ public interface UserService {
 
     List<User> findAllByCompany(Long companyId);
 
+
 }

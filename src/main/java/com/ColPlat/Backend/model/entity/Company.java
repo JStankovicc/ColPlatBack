@@ -51,6 +51,7 @@ public class Company {
 
     public CompanyResponse getCompanyResponse() throws IOException {
         CompanyResponse companyResponse = new CompanyResponse();
+        companyResponse.setId(this.id);
         companyResponse.setCompanyName(this.name);
         companyResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(this.companyLogoPic));
         return companyResponse;

@@ -1,10 +1,11 @@
 package com.ColPlat.Backend.controller;
 
+import com.ColPlat.Backend.model.dto.request.ProjectCreateRequest;
 import com.ColPlat.Backend.model.dto.request.ProjectNoteUpdateRequest;
 import com.ColPlat.Backend.model.dto.request.ProjectTaskUpdateRequest;
-import com.ColPlat.Backend.model.entity.Project;
-import com.ColPlat.Backend.model.entity.ProjectTask;
-import com.ColPlat.Backend.model.entity.TaskStatus;
+import com.ColPlat.Backend.model.dto.response.ProjectInfoResponse;
+import com.ColPlat.Backend.model.dto.response.ProjectResponse;
+import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,11 +42,43 @@ public class ProjectController {
         return ResponseEntity.ok(taskStatusService.getAllForProject(1L));
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<Project> getProjectInfo(@RequestHeader("Authorization") String authorizationHeader){
+    @PostMapping("/add")
+    @Transactional
+    public ResponseEntity<String> addProject(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ProjectCreateRequest projectCreateRequest){
+        String token = authorizationHeader.replace("Bearer ", "");
+        Company company = companyService.getCompanyFromToken(token);
+        projectService.addProject(projectCreateRequest, company.getId());
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/allByCompany")
+    public ResponseEntity<List<ProjectResponse>> getAllProjectsByCompany(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ", "");
+        Company company = companyService.getCompanyFromToken(token);
+        return ResponseEntity.ok(projectService.getAllProjectResponsesByCompany(company.getId()));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<ProjectInfoResponse>> getProjectList(@RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.replace("Bearer ", "");
 
-        return ResponseEntity.ok(projectService.getProjectById(1L));
+        return ResponseEntity.ok(projectService.getProjectsByUser(userService.findByEmail(jwtService.extractUserName(token))));
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Project> getProjectInfo(
+            @PathVariable Long projectId,
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        Project project = projectService.getProjectById(projectId);
+
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(project);
     }
 
     @PutMapping("/updateNote")
@@ -110,5 +143,17 @@ public class ProjectController {
             return ResponseEntity.internalServerError()
                     .body("Greška pri ažuriranju task-a: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/addUserToProject")
+    public ResponseEntity<String> addUserToProject(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("userId") Long userId, @RequestParam("projectId") Long projectId){
+        User user = userService.findById(userId);
+        Project project = projectService.getProjectById(projectId);
+        if (project == null){
+            return ResponseEntity.notFound().build();
+        }
+        project.getUsers().add(user);
+        projectService.save(project);
+        return ResponseEntity.ok("Korisnik dodat na projekat");
     }
 }
