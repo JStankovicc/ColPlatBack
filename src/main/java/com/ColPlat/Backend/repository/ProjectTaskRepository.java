@@ -11,5 +11,7 @@ import java.util.List;
 public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long> {
     List<ProjectTask> findAllByUserId(Long id);
 
-    List<ProjectTask> findAllByProjectAndUserId(Project project, Long user_id);
+    List<ProjectTask> findAllByProjectAndUsers_Id(Project project, Long user_id);
+
+    List<ProjectTask> findAllByProjectId(Long projectId);
 }

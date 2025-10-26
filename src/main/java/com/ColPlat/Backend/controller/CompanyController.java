@@ -28,6 +28,7 @@ public class CompanyController {
     private final UserService userService;
     private final UserProfileService userProfileService;
     private final JwtService jwtService;
+    private final ProjectTaskService projectTaskService;
 
     @GetMapping("/getCompanyInfo")
     public ResponseEntity<CompanyResponse> getCompanyInfo(@RequestHeader("Authorization") String authorizationHeader) {
@@ -90,7 +91,26 @@ public class CompanyController {
         }
 
         return ResponseEntity.ok(userResponses);
+    }
+
+    @GetMapping("/getAllCompanyProjectWorkersNotOnTask")
+    public ResponseEntity<List<UserResponse>> getAllCompanyProjectWorkersNotOnTask(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId, @RequestParam("taskId") Long taskId){
+
+        List<User> users = projectService.getAllProjectUsers(projectId);
+
+        List<User> taskUsers = projectTaskService.getTaskUsers(taskId);
+
+        users.removeIf(taskUsers::contains);
+
+        return ResponseEntity.ok(users.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
+    }
+
+    @GetMapping("/getAllCompanyProjectWorkersOnTask")
+    public ResponseEntity<List<UserResponse>> getAllCompanyProjectWorkersOnTask(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId, @RequestParam("taskId") Long taskId){
+
+        List<User> taskUsers = projectTaskService.getTaskUsers(taskId);
 
 
+        return ResponseEntity.ok(taskUsers.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
     }
 }

@@ -2,6 +2,7 @@ package com.ColPlat.Backend.service;
 
 import com.ColPlat.Backend.model.entity.Project;
 import com.ColPlat.Backend.model.entity.ProjectTask;
+import com.ColPlat.Backend.model.entity.User;
 
 import java.util.List;
 
@@ -11,5 +12,9 @@ public interface ProjectTaskService {
     ProjectTask getTaskById(Long id);
 
     void save(ProjectTask task);
+
+    List<ProjectTask> getTasksByProject(Long projectId);
+
+    List<User> getTaskUsers(Long taskId);
 
 }

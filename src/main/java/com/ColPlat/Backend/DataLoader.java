@@ -545,7 +545,7 @@ public class DataLoader {
                 .note("Neki važan note za projekat")
                 .startDate(Date.from(Instant.now()))
                 .projectTasks(new ArrayList<>())
-                .users(Set.of(user1))
+                .users(Set.of(user1, user2))
                 .build();
         projectRepository.save(project);
 

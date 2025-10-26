@@ -6,10 +6,12 @@ import com.ColPlat.Backend.model.dto.request.ProjectTaskUpdateRequest;
 import com.ColPlat.Backend.model.dto.request.TaskStatusRequest;
 import com.ColPlat.Backend.model.dto.response.ProjectInfoResponse;
 import com.ColPlat.Backend.model.dto.response.ProjectResponse;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.config.Task;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +29,18 @@ public class ProjectController {
     private final ProjectService projectService;
     private final CompanyService companyService;
     private final JwtService jwtService;
+    private final UserProfileService userProfileService;
 
     @GetMapping("/tasks/my")
     public ResponseEntity<List<ProjectTask>> getMyTasks(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
         String token = authorizationHeader.replace("Bearer ", "");
 
         return ResponseEntity.ok(projectTaskService.getUserTasks(projectService.getProjectById(projectId), userService.findByEmail(jwtService.extractUserName(token)).getId()));
+    }
+
+    @GetMapping("/tasks/project")
+    public ResponseEntity<List<ProjectTask>> getProjectTasks(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
+        return ResponseEntity.ok(projectTaskService.getTasksByProject(projectId));
     }
 
     @GetMapping("/taskStatus/getAll")
@@ -60,6 +68,18 @@ public class ProjectController {
     public ResponseEntity<String> updateTaskStatus(@RequestHeader("Authorization") String authorizationHeader, @RequestBody TaskStatus taskStatus){
         taskStatusService.updateTaskStatus(taskStatus);
         return ResponseEntity.ok("Uspesno azurirano");
+    }
+
+    @PostMapping("/addUserToProjectTask")
+    public ResponseEntity<String> addUserToProjectTask(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("userId") Long userId, @RequestParam("taskId") Long taskId){
+        User user = userService.findById(userId);
+        ProjectTask task = projectTaskService.getTaskById(taskId);
+        if (task == null){
+            return ResponseEntity.notFound().build();
+        }
+        task.getUsers().add(user);
+        projectTaskService.save(task);
+        return ResponseEntity.ok("Korisnik dodat na task");
     }
 
     @PostMapping("/add")
@@ -172,5 +192,11 @@ public class ProjectController {
         project.getUsers().add(user);
         projectService.save(project);
         return ResponseEntity.ok("Korisnik dodat na projekat");
+    }
+
+    @GetMapping("/getAllProjectUsers")
+    public ResponseEntity<List<UserResponse>> getAllProjectUsers(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("projectId") Long projectId){
+        List<User> users = projectService.getAllProjectUsers(projectId);
+        return ResponseEntity.ok(users.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
     }
 }
