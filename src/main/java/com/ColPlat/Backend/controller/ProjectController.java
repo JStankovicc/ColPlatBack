@@ -1,9 +1,6 @@
 package com.ColPlat.Backend.controller;
 
-import com.ColPlat.Backend.model.dto.request.ProjectCreateRequest;
-import com.ColPlat.Backend.model.dto.request.ProjectNoteUpdateRequest;
-import com.ColPlat.Backend.model.dto.request.ProjectTaskUpdateRequest;
-import com.ColPlat.Backend.model.dto.request.TaskStatusRequest;
+import com.ColPlat.Backend.model.dto.request.*;
 import com.ColPlat.Backend.model.dto.response.ProjectInfoResponse;
 import com.ColPlat.Backend.model.dto.response.ProjectResponse;
 import com.ColPlat.Backend.model.dto.response.UserResponse;
@@ -82,6 +79,14 @@ public class ProjectController {
         return ResponseEntity.ok("Korisnik dodat na task");
     }
 
+    @PostMapping("/addTask")
+    public ResponseEntity<String> addTask(@RequestHeader("Authorization") String authorizationHeader, @RequestBody AddProjectTaskRequest addProjectTaskRequest){
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        projectTaskService.createTask(userService.findByEmail(jwtService.extractUserName(token)), addProjectTaskRequest.getProjectTaskName(), addProjectTaskRequest.getProjectId(), addProjectTaskRequest.getStatusID());
+        return ResponseEntity.ok("Success");
+    }
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<String> addProject(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ProjectCreateRequest projectCreateRequest){
