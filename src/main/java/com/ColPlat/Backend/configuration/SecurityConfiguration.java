@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                     source.registerCorsConfiguration("/**", configuration);
                     c.configurationSource(source);
                 })
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**", "/api/v1/msg/**")
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**", "/api/v1/msg/**", "/actuator/health", "/actuator/health/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
