@@ -32,7 +32,6 @@ public class InboxController {
     private final JwtService jwtService;
     private final ChatService chatService;
 
-    // Vraća ID trenutnog korisnika
     @GetMapping("/me")
     public ResponseEntity<Long> getCurrentUserId(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
@@ -41,7 +40,6 @@ public class InboxController {
         return ResponseEntity.ok(me.getId());
     }
 
-    // već imaš ovo – vraća sve korisnike firme:
     @GetMapping("/contacts/all")
     public ResponseEntity<List<UserResponse>> getAllContacts(@RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.replace("Bearer ", "");
@@ -55,7 +53,6 @@ public class InboxController {
         return ResponseEntity.ok(userResponses);
     }
 
-    // inbox: konverzacije gde učestvuje trenutni user
     @GetMapping("/threads")
     public ResponseEntity<List<ConversationSummaryResponse>> getInbox(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
@@ -66,7 +63,6 @@ public class InboxController {
         return ResponseEntity.ok(chatService.getInbox(company.getId(), me.getId()));
     }
 
-    // kreiraj ili dohvati 1-1 konverzaciju
     @PostMapping("/threads/direct")
     public ResponseEntity<Long> createOrGetDirect(@RequestHeader("Authorization") String authorizationHeader,
                                                   @RequestBody CreateDirectConversationRequest req) {
@@ -79,7 +75,6 @@ public class InboxController {
         return ResponseEntity.ok(id);
     }
 
-    // kreiraj grupu
     @PostMapping("/threads/group")
     public ResponseEntity<Long> createGroup(@RequestHeader("Authorization") String authorizationHeader,
                                             @RequestBody CreateGroupConversationRequest req) {
@@ -92,7 +87,6 @@ public class InboxController {
         return ResponseEntity.ok(id);
     }
 
-    // poruke iz threada (paginacija)
     @GetMapping("/threads/{id}/messages")
     public ResponseEntity<Page<MessageResponse>> getMessages(@RequestHeader("Authorization") String authorizationHeader,
                                                              @PathVariable Long id,
@@ -105,7 +99,6 @@ public class InboxController {
         return ResponseEntity.ok(chatService.getMessages(id, me.getId(), pageable));
     }
 
-    // pošalji poruku (REST varijanta, WS varijantu imaš gore)
     @PostMapping("/threads/{id}/messages")
     public ResponseEntity<MessageResponse> sendMessage(@RequestHeader("Authorization") String authorizationHeader,
                                                        @PathVariable Long id,
@@ -116,7 +109,6 @@ public class InboxController {
         return ResponseEntity.ok(chatService.sendMessage(id, me.getId(), req.getContent()));
     }
 
-    // mark-as-read
     @PostMapping("/threads/{id}/read")
     public ResponseEntity<Void> markRead(@RequestHeader("Authorization") String authorizationHeader,
                                          @PathVariable Long id,

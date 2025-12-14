@@ -87,6 +87,7 @@ public class ProjectController {
         projectTaskService.createTask(userService.findByEmail(jwtService.extractUserName(token)), addProjectTaskRequest.getProjectTaskName(), addProjectTaskRequest.getProjectId(), addProjectTaskRequest.getStatusID());
         return ResponseEntity.ok("Success");
     }
+
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<String> addProject(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ProjectCreateRequest projectCreateRequest){

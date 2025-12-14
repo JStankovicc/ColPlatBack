@@ -17,7 +17,7 @@ import java.util.Date;
 public class TaskNote {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String note;
