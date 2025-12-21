@@ -5,10 +5,13 @@ import com.ColPlat.Backend.model.entity.ProjectTask;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.enums.TaskPriority;
 import com.ColPlat.Backend.repository.ProjectTaskRepository;
+import com.ColPlat.Backend.repository.TaskNoteRepository;
 import com.ColPlat.Backend.service.ProjectService;
 import com.ColPlat.Backend.service.ProjectTaskService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -19,6 +22,8 @@ public class ProjectTaskServiceImplementation implements ProjectTaskService {
 
     private final ProjectTaskRepository projectTaskRepository;
     private final ProjectService projectService;
+    private final TaskNoteRepository taskNoteRepository;
+    private final EntityManager entityManager;
 
     @Override
     public List<ProjectTask> getUserTasks(Project project, Long id) {
@@ -60,6 +65,16 @@ public class ProjectTaskServiceImplementation implements ProjectTaskService {
                 .build();
 
         projectTaskRepository.save(projectTask);
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+
+        projectTaskRepository.deleteTaskUsers(id);
+        projectTaskRepository.deleteTaskNotes(id);
+        projectTaskRepository.deleteTask(id);
+
     }
 
 }

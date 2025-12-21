@@ -18,4 +18,6 @@ public interface ProjectTaskService {
     List<User> getTaskUsers(Long taskId);
 
     void createTask(User user, String projectTaskName, Long projectId, Long statusID);
+
+    void deleteById(Long id);
 }

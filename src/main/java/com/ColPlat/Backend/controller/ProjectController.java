@@ -188,6 +188,24 @@ public class ProjectController {
         }
     }
 
+    @DeleteMapping("/tasks/delete")
+    @Transactional
+    public ResponseEntity<String> deleteProjectTask(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("id") Long id){
+        try {
+            ProjectTask task = projectTaskService.getTaskById(id);
+            if (task == null) {
+                return ResponseEntity.notFound().build();
+            }
+            projectTaskService.deleteById(id);
+            return ResponseEntity.ok("Task uspešno obrisan");
+        } catch (Exception e) {
+            System.err.println("Error in deleteProjectTask: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                    .body("Greška pri brisanju task-a: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/addUserToProject")
     public ResponseEntity<String> addUserToProject(@RequestHeader("Authorization") String authorizationHeader, @RequestParam("userId") Long userId, @RequestParam("projectId") Long projectId){
         User user = userService.findById(userId);
