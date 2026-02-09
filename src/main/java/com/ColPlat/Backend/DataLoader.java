@@ -36,18 +36,17 @@ public class DataLoader {
     private final RegionRepository regionRepository;
     private final CityRepository cityRepository;
     private final LocationRepository locationRepository;
-    private final DepartmentRepository departmentRepository; // Dodato
-    private final TeamRepository teamRepository; // Dodato
+    private final DepartmentRepository departmentRepository;
+    private final TeamRepository teamRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final TaskNoteRepository taskNoteRepository;
     private final ProjectTaskRepository projectTaskRepository;
+    private final MovableAssetRepository movableAssetRepository;
 
-    // Dodati repository-je za kalendarske funkcionalnosti
     private final CalendarEventRepository calendarEventRepository;
     private final EventParticipantRepository eventParticipantRepository;
 
-    // Repository-ji za kontakte
     private final ContactRepository contactRepository;
     private final ContactListRepository contactListRepository;
 
@@ -70,6 +69,8 @@ public class DataLoader {
 
         addMockContacts();
         addMockContactsLists();
+
+        addMockMovableAssetsData();
     }
 
     public void addUserData(){
@@ -599,6 +600,66 @@ public class DataLoader {
                 .dateTime(new Date())
                 .build();
         taskNoteRepository.save(note2);
+
+    }
+
+    @Transactional
+    public void addMockMovableAssetsData() {
+
+        Company company = companyRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Company with ID 1 not found"));
+
+        Location location = locationRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Location with ID 1 not found"));
+
+        User issuedBy = userRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("IssuedBy user not found"));
+
+        User currentUser = userRepository.findById(2L)
+                .orElseThrow(() -> new RuntimeException("Current user not found"));
+
+
+        MovableAsset asset1 = MovableAsset.builder()
+                .identifier("MA-0001")
+                .name("Laptop Dell XPS 15")
+                .barcode("BA-0001")
+                .type("LAPTOP")
+                .manufacturer("Dell")
+                .model("XPS 15")
+                .category("IT_EQUIPMENT")
+                .serialNumber("SN-001")
+                .movableAssetStatus(MovableAssetStatus.AVAILABLE)
+                .company(company)
+                .location(location)
+                .issuedBy(issuedBy)
+                .currentUser(currentUser)
+                .purchaseDate(new Date())
+                .unit("piece")
+                .amount(1)
+                .comment("Issued by admin, assigned to employee")
+                .build();
+
+        MovableAsset asset2 = MovableAsset.builder()
+                .identifier("MA-0002")
+                .name("iPhone 14 Pro")
+                .barcode("BA-0002")
+                .type("PHONE")
+                .manufacturer("Apple")
+                .model("14 Pro")
+                .category("MOBILE_DEVICE")
+                .serialNumber("SN-002")
+                .movableAssetStatus(MovableAssetStatus.IN_USE)
+                .company(company)
+                .location(location)
+                .issuedBy(issuedBy)
+                .currentUser(currentUser)
+                .purchaseDate(new Date())
+                .unit("piece")
+                .amount(1)
+                .comment("Company phone")
+                .build();
+
+        movableAssetRepository.saveAll(List.of(asset1, asset2));
 
     }
 

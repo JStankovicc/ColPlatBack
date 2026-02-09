@@ -5,6 +5,8 @@ import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
 
+import java.util.List;
+
 public interface CompanyService {
 
     Company getCompanyFromToken(String token);
@@ -20,4 +22,5 @@ public interface CompanyService {
     Company findCompanyFromUser(User user);
 
     CompanyResponse getCompanyResponseFromCompanyId(Long id);
+
 }

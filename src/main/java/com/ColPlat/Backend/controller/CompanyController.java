@@ -113,4 +113,12 @@ public class CompanyController {
 
         return ResponseEntity.ok(taskUsers.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
     }
+
+    @GetMapping("/getAllCompanyUsers")
+    public ResponseEntity<List<UserResponse>> getAllCompanyUsers(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ", "");
+        Company company = companyService.getCompanyFromToken(token);
+        List<User> users = userService.findAllByCompany(company.getId());
+        return ResponseEntity.ok(users.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
+    }
 }

@@ -23,7 +23,7 @@ public class TaskNote {
     private String note;
     private Long userId;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_task_id")  // ili kako je kolona u bazi
+    @JoinColumn(name = "project_task_id")
     private ProjectTask projectTask;
     private Date dateTime;
 }
