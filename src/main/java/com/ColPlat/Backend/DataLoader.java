@@ -57,20 +57,31 @@ public class DataLoader {
         addMoreMockUsers();
 
         addMockCompany();
-        addMockDepartmentsAndTeams();
 
-        addMockProjectTaskStatusData();
-        addMockProjectData();
+        addPavleNedeljkovic();
+        addDusanZekovic();
+        addDarkoRosic();
+        addMarinaSejnjanovic();
+        addGoranSejnjanovic();
+        addNenadNedeljkovic();
+        addNenadCendic();
+        addSlobodanGrkovic();
+        addResatRedza();
+        addIvanMiletic();
+        //addMockDepartmentsAndTeams();
+
+        //addMockProjectTaskStatusData();
+        //addMockProjectData();
 
         addMockLocation();
 
-        addMockCalendarEvents();
-        addMockEventParticipants();
+        //addMockCalendarEvents();
+        //addMockEventParticipants();
 
-        addMockContacts();
-        addMockContactsLists();
+       // addMockContacts();
+        //addMockContactsLists();
 
-        addMockMovableAssetsData();
+        //addMockMovableAssetsData();
     }
 
     public void addUserData(){
@@ -80,7 +91,7 @@ public class DataLoader {
         rolesAdmin.add(Role.SALES);
         rolesAdmin.add(Role.PROJECT_MANAGEMENT);
         rolesAdmin.add(Role.PROJECT);
-        User user1 = new User(1L,"j.stankovic001@gmail.com",passwordEncoder.encode("123"),1L,1L,rolesAdmin,true,true,true, LocalDateTime.now(),LocalDateTime.now());
+        User user1 = new User(1L,"jovan.stankovic@abplat.com",passwordEncoder.encode("HWDRTWWU123"),1L,1L,rolesAdmin,true,true,true, LocalDateTime.now(),LocalDateTime.now());
         userRepository.save(user1);
 
         byte[] defaultProfilePic = null;
@@ -124,19 +135,271 @@ public class DataLoader {
         UserProfile userProfile2 = new UserProfile(2L, "Kosta Markovic", "Kosta", "Markovic", defaultProfilePic, 1L, LocalDateTime.now(), LocalDateTime.now());
         userProfileRepository.save(userProfile2);
 
-        User user2 = new User(2L, "kosta.markovic@mockcompany.com", passwordEncoder.encode("123"), 1L, userProfile2.getId(), rolesKosta, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        User user2 = new User(2L, "kosta.markovic@abplat.com", passwordEncoder.encode("123KMarkovic123"), 1L, userProfile2.getId(), rolesKosta, true, true, true, LocalDateTime.now(), LocalDateTime.now());
         userRepository.save(user2);
 
-// Dodavanje Nikole Milovanovica
-        /**Set<Role> rolesNikola = new HashSet<>();
-        rolesNikola.add(Role.SALES);
+    }
 
-        UserProfile userProfile3 = new UserProfile(3L, "Nikola Milovanovic", "Nikola", "Milovanovic", defaultProfilePic, 1L, LocalDateTime.now(), LocalDateTime.now());
+    public void addPavleNedeljkovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.ADMIN);
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(3L, "Pavle Nedeljković", "Pavle", "Nedeljkovic", defaultProfilePic, 3L, LocalDateTime.now(), LocalDateTime.now());
         userProfileRepository.save(userProfile3);
 
-        User user3 = new User(3L, "nikola.milovanovic@mockcompany.com", passwordEncoder.encode("123"), 1L, userProfile3.getId(), rolesNikola, true, true, true, LocalDateTime.now(), LocalDateTime.now());
-        userRepository.save(user3);*/
+        User user3 = new User(3L, "pavle.nedeljkovic@lorapro.rs", passwordEncoder.encode("pavlelorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
 
+    public void addDusanZekovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(4L, "Dušan Zeković", "Dušan", "Zekovic", defaultProfilePic, 4L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(4L, "dusan.zekovic@lorapro.rs", passwordEncoder.encode("dusanlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addDarkoRosic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(5L, "Darko Rosić", "Darko", "Rosić", defaultProfilePic, 5L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(5L, "darko.rosic@lorapro.rs", passwordEncoder.encode("darkolorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addMarinaSejnjanovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(6L, "Marina Sejnjanović", "Marina", "Sejnjanović", defaultProfilePic, 6L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(6L, "marina.sejnjanovic@lorapro.rs", passwordEncoder.encode("marinalorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addGoranSejnjanovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(7L, "Goran Sejnjanović", "Goran", "Sejnjanović", defaultProfilePic, 7L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(7L, "goran.sejnjanović@lorapro.rs", passwordEncoder.encode("goranlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addNenadNedeljkovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.ADMIN);
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(8L, "Nenad Nedeljkovic", "Nenad", "Nedeljkovic", defaultProfilePic, 8L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(8L, "nenad.nedeljkovic@lorapro.rs", passwordEncoder.encode("nenadlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addNenadCendic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(9L, "Nenad Ćendić", "Nenad", "Ćendić", defaultProfilePic, 9L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(9L, "nenad.cendic@lorapro.rs", passwordEncoder.encode("nenadlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addSlobodanGrkovic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(10L, "Slobodan Grković", "Slobodan", "Grković", defaultProfilePic, 10L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(10L, "slobodan.grkovic@lorapro.rs", passwordEncoder.encode("slobodanlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addResatRedza(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(11L, "Resat Redža", "Resat", "Redža", defaultProfilePic, 11L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(11L, "resat.redza@lorapro.rs", passwordEncoder.encode("resatlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
+    }
+
+    public void addIvanMiletic(){
+        byte[] defaultProfilePic = null;
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/default_profile_picture.png")) {
+            if (inputStream != null) {
+                defaultProfilePic = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        Set<Role> rolesPavle = new HashSet<>();
+        rolesPavle.add(Role.PROJECT_MANAGEMENT);
+        rolesPavle.add(Role.PROJECT);
+        rolesPavle.add(Role.SALES);
+        rolesPavle.add(Role.SALES_MANAGEMENT);
+
+        UserProfile userProfile3 = new UserProfile(12L, "Ivan Miletić", "Ivan", "Miletić", defaultProfilePic, 12L, LocalDateTime.now(), LocalDateTime.now());
+        userProfileRepository.save(userProfile3);
+
+        User user3 = new User(12L, "ivan.miletic@lorapro.rs", passwordEncoder.encode("ivanlorapro"), 2L, userProfile3.getId(), rolesPavle, true, true, true, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user3);
     }
 
     public void addMockDepartmentsAndTeams() {
@@ -181,7 +444,7 @@ public class DataLoader {
 
     public void addMockCompany(){
         byte[] defaultLogo = null;
-        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/mockCompanyLogo.png")) {
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/ABPlat Logo Inline.png")) {
             if (inputStream != null) {
                 defaultLogo = inputStream.readAllBytes();
             } else {
@@ -197,9 +460,26 @@ public class DataLoader {
         supportTypes.add(SupportType.CHAT);
         //supportTypes.add(SupportTypes.PHONE);
 
-        Company company = new Company(1L,"MockCompany", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
+        Company company = new Company(1L,"ABPlat", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
 
         companyRepository.save(company);
+
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("images/loraPro.png")) {
+            if (inputStream != null) {
+                defaultLogo = inputStream.readAllBytes();
+            } else {
+                throw new RuntimeException("Slika nije pronađena u resources folderu!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Greška prilikom učitavanja slike!");
+        }
+
+        supportTypes.add(SupportType.PHONE);
+
+        Company company2 = new Company(2L,"Lora-Pro DOO", "21426300", 2L, defaultLogo, 2L, true, supportTypes, 10 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
+
+        companyRepository.save(company2);
     }
 
     public void addMockLocation(){
@@ -218,7 +498,7 @@ public class DataLoader {
 
         Location location = new Location(1L, 2, "Karadjordjeva 171");
         locationRepository.save(location);
-        location = new Location(2L,1,"Narodnih heroja 17/13");
+        location = new Location(2L,1,"Studentska 5");
         locationRepository.save(location);
     }
 
