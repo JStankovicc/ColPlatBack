@@ -2,6 +2,7 @@ package com.ColPlat.Backend.service.implementation;
 
 import com.ColPlat.Backend.model.dto.request.PostMovableAssetRequest;
 import com.ColPlat.Backend.model.dto.request.PostMovableAssetStatusChangeRequest;
+import com.ColPlat.Backend.model.dto.request.UpdateMovableAssetRequest;
 import com.ColPlat.Backend.model.dto.response.MovableAssetResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.MovableAsset;
@@ -75,9 +76,34 @@ public class MovableAssetServiceImplementation implements MovableAssetService {
     }
 
     @Override
-    public MovableAsset update(PostMovableAssetRequest movableAsset) {
-        return null;
+    public MovableAsset update(UpdateMovableAssetRequest movableAsset, User issuedBy) {
+        Optional<MovableAsset> movableAssetOptional = movableAssetRepository.findById(movableAsset.getId());
+        if (!movableAssetOptional.isPresent()) { return null; }
+
+        User currentUser = null;
+        if (movableAsset.getCurrentUserId() != null) {
+            currentUser = userService.findById(movableAsset.getCurrentUserId());
+        }
+
+        MovableAsset movableAsset1 = movableAssetOptional.get();
+        movableAsset1.setIdentifier(movableAsset.getIdentifier());
+        movableAsset1.setName(movableAsset.getName());
+        movableAsset1.setBarcode(movableAsset.getBarcode());
+        movableAsset1.setType(movableAsset.getType());
+        movableAsset1.setModel(movableAsset.getModel());
+        movableAsset1.setManufacturer(movableAsset.getManufacturer());
+        movableAsset1.setCategory(movableAsset.getCategory());
+        movableAsset1.setSerialNumber(movableAsset.getSerialNumber());
+        movableAsset1.setUnit(movableAsset.getUnit());
+        movableAsset1.setAmount(movableAsset.getAmount());
+        movableAsset1.setIssuedBy(issuedBy);
+        movableAsset1.setPurchaseDate(movableAsset.getPurchaseDate());
+        movableAsset1.setInsuranceDate(movableAsset.getInsuranceDate());
+        movableAsset1.setComment(movableAsset.getComment());
+        movableAsset1.setCurrentUser(currentUser);
+        return movableAssetRepository.save(movableAsset1);
     }
+
 
     @Override
     public MovableAsset create(PostMovableAssetRequest movableAsset, Company company, User issuedBy) {
@@ -110,6 +136,11 @@ public class MovableAssetServiceImplementation implements MovableAssetService {
 
         movableAssetRepository.save(movableAsset1);
         return movableAsset1;
+    }
+
+    @Override
+    public void deleteMovableAsset(Long id) {
+        movableAssetRepository.deleteById(id);
     }
 
     @Override

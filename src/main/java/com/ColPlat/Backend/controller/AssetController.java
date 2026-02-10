@@ -2,6 +2,7 @@ package com.ColPlat.Backend.controller;
 
 import com.ColPlat.Backend.model.dto.request.PostMovableAssetRequest;
 import com.ColPlat.Backend.model.dto.request.PostMovableAssetStatusChangeRequest;
+import com.ColPlat.Backend.model.dto.request.UpdateMovableAssetRequest;
 import com.ColPlat.Backend.model.dto.response.MovableAssetResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.MovableAsset;
@@ -11,6 +12,8 @@ import com.ColPlat.Backend.service.JwtService;
 import com.ColPlat.Backend.service.MovableAssetService;
 import com.ColPlat.Backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,5 +47,17 @@ public class AssetController {
         String token = authororizationHeader.replace("Bearer ", "");
         User issuedBy = userService.findByEmail(jwtService.extractUserName(token));
         movableAssetService.changeStatus(assetId, issuedBy, movableAssetStatusChange);
+    }
+
+    @PutMapping("/movableAsset")
+    public ResponseEntity<MovableAsset> updateMovableAsset(@RequestHeader("Authorization") String authororizationHeader, @RequestBody UpdateMovableAssetRequest movableAsset) {
+        String token = authororizationHeader.replace("Bearer ", "");
+        User issuedBy = userService.findByEmail(jwtService.extractUserName(token));
+        return ResponseEntity.ok(movableAssetService.update(movableAsset, issuedBy));
+    }
+
+    @DeleteMapping("/movableAsset")
+    public void deleteMovableAsset(@RequestHeader("Authorization") String authororizationHeader, @RequestParam Long assetId) {
+        movableAssetService.deleteMovableAsset(assetId);
     }
 }

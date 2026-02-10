@@ -45,7 +45,7 @@ public class ProjectController {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
-        return ResponseEntity.ok(taskStatusService.getAllForProject(1L));
+        return ResponseEntity.ok(taskStatusService.getAllForProject(projectId));
     }
 
     @DeleteMapping("/deleteTaskStatus")
