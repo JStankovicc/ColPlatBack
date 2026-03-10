@@ -5,6 +5,7 @@ import com.ColPlat.Backend.model.dto.request.UserProfileWithoutPasswordRequest;
 import com.ColPlat.Backend.model.dto.response.JwtAuthenticationResponse;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
 import com.ColPlat.Backend.model.dto.response.UserResponse;
+import com.ColPlat.Backend.model.dto.response.UserResponseWithPermissionsResponse;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.entity.UserProfile;
 
@@ -21,4 +22,6 @@ public interface UserProfileService {
     JwtAuthenticationResponse updateProfileWithPassword(String token, UserProfileWithPasswordRequest request);
 
     UserResponse getUserResponseFromUser(User u);
+
+    UserResponseWithPermissionsResponse getUserResponseWithPermissionsFromUser(User u);
 }

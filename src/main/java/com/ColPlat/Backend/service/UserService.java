@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.service;
 
+import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
 import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
@@ -25,6 +26,8 @@ public interface UserService {
     User findById(Long id);
 
     List<User> findAllByCompany(Long companyId);
+
+    void changeRole(ChangeUserRoleRequest changeUserRoleRequest);
 
 
 }

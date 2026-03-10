@@ -1,12 +1,8 @@
 package com.ColPlat.Backend.controller;
 
-import com.ColPlat.Backend.model.dto.response.CompanyResponse;
-import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
-import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
-import com.ColPlat.Backend.model.dto.response.UserResponse;
+import com.ColPlat.Backend.model.dto.response.*;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
-import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.model.enums.SupportType;
 import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
@@ -121,4 +117,13 @@ public class CompanyController {
         List<User> users = userService.findAllByCompany(company.getId());
         return ResponseEntity.ok(users.stream().map(user -> userProfileService.getUserResponseFromUser(user)).toList());
     }
+
+    @GetMapping("/getAllCompanyUsersWithPermissions")
+    public ResponseEntity<List<UserResponseWithPermissionsResponse>> getAllCompanyUsersWithPermissions(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.replace("Bearer ", "");
+        Company company = companyService.getCompanyFromToken(token);
+        List<User> users = userService.findAllByCompany(company.getId());
+        return ResponseEntity.ok(users.stream().map(user -> userProfileService.getUserResponseWithPermissionsFromUser(user)).toList());
+    }
+
 }

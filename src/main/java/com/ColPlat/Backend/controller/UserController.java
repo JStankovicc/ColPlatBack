@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.controller;
 
+import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.service.UserService;
@@ -29,5 +30,11 @@ public class UserController {
     @DeleteMapping("/delete")
     public void deleteUser(@RequestParam("email") String email){
         userService.deleteUserByEmail(email);
+    }
+
+    @PutMapping("/changeRole")
+    public void changeRole(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ChangeUserRoleRequest changeUserRoleRequest){
+        System.out.println("Authorization header: " + authorizationHeader);
+        userService.changeRole(changeUserRoleRequest);
     }
 }

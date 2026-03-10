@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
 import com.ColPlat.Backend.model.dto.response.UserResponse;
@@ -104,7 +105,19 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findAllByCompanyId(companyId);
     }
 
+    @Override
+    public void changeRole(ChangeUserRoleRequest changeUserRoleRequest){
+        Optional<User> userOptional = userRepository.findById(changeUserRoleRequest.getUserId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getRoles().contains(changeUserRoleRequest.getRole())) {
+                user.getRoles().remove(changeUserRoleRequest.getRole());
+            } else {
+                user.getRoles().add(changeUserRoleRequest.getRole());
+            }
 
-
+            userRepository.save(user);
+        }
+    }
 
 }
