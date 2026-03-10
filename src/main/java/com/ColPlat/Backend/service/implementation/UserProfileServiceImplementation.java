@@ -3,10 +3,12 @@ package com.ColPlat.Backend.service.implementation;
 import com.ColPlat.Backend.model.dto.request.SignInRequest;
 import com.ColPlat.Backend.model.dto.request.UserProfileWithPasswordRequest;
 import com.ColPlat.Backend.model.dto.request.UserProfileWithoutPasswordRequest;
+import com.ColPlat.Backend.model.dto.request.UserRequest;
 import com.ColPlat.Backend.model.dto.response.JwtAuthenticationResponse;
 import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
 import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.dto.response.UserResponseWithPermissionsResponse;
+import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.repository.UserProfileRepository;
@@ -151,6 +153,24 @@ public class UserProfileServiceImplementation implements UserProfileService {
                     .build();
         }
         return null;
+    }
+
+    @Override
+    public void createUserAndProfile(UserRequest userRequest, Company company) {
+        UserProfile userProfile = null;
+        try {
+            userProfile = UserProfile.builder()
+                    .displayName(userRequest.getFirstName() + " " + userRequest.getLastName())
+                    .firstName(userRequest.getFirstName())
+                    .lastName(userRequest.getLastName())
+                    .profilePic(ImageUtils.getInstance().getDefaultThumbnailImage())
+                    .userSettingId(1L)
+                    .build();
+        } catch (IOException e) {}
+
+        userProfileRepository.save(userProfile);
+
+        userService.addUserWithProfile(userRequest, userProfile.getId(), company.getId());
     }
 
 }

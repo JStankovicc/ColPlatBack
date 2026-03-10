@@ -2,17 +2,10 @@ package com.ColPlat.Backend.service.implementation;
 
 import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
-import com.ColPlat.Backend.model.dto.response.UserProfileResponse;
-import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
-import com.ColPlat.Backend.model.entity.UserProfile;
 import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
-import com.ColPlat.Backend.service.CompanyService;
-import com.ColPlat.Backend.service.JwtService;
-import com.ColPlat.Backend.service.UserProfileService;
 import com.ColPlat.Backend.service.UserService;
-import com.ColPlat.Backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -58,6 +50,31 @@ public class UserServiceImplementation implements UserService {
                 .email(userRequest.getEmail())
                 .password(encodedPassword)
                 .roles(new HashSet<>())
+                .build();
+
+        for (String roleStr : userRequest.getRole()) {
+            try {
+                Role roleEnum = Role.valueOf(roleStr.toUpperCase());
+                user.getRoles().add(roleEnum);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid role: " + roleStr);
+            }
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addUserWithProfile(UserRequest userRequest, Long userProfileId, Long companyId){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
+
+        User user = User.builder()
+                .email(userRequest.getEmail())
+                .password(encodedPassword)
+                .roles(new HashSet<>())
+                .userProfileId(userProfileId)
+                .companyId(companyId)
                 .build();
 
         for (String roleStr : userRequest.getRole()) {
