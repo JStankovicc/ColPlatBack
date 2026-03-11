@@ -26,7 +26,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class DataLoader {
-
+/**
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
@@ -944,5 +944,5 @@ public class DataLoader {
 
     }
 
-
+*/
 }

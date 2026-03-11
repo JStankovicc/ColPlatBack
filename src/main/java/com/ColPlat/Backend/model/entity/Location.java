@@ -17,6 +17,12 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    private short countryId;
+    @Column(nullable = false)
+    private Integer regionId;
+    @Column(nullable = false)
+    private Integer districtId;
+    @Column(nullable = false)
     private String city;
     @Column(nullable = false)
     private String address;

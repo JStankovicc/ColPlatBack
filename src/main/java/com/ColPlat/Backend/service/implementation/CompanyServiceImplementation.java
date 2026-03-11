@@ -125,5 +125,11 @@ public class CompanyServiceImplementation implements CompanyService {
         return null;
     }
 
+    @Override
+    public void setNewHeadquarters(Company company, Location location) {
+        company.setLocationId(location.getId());
+        companyRepository.save(company);
+    }
+
 
 }

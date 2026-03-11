@@ -4,6 +4,7 @@ import com.ColPlat.Backend.model.dto.response.CompanyResponse;
 import com.ColPlat.Backend.model.dto.response.CompanySettingsInfoResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.entity.Location;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface CompanyService {
     Company findCompanyFromUser(User user);
 
     CompanyResponse getCompanyResponseFromCompanyId(Long id);
+
+    public void setNewHeadquarters(Company company, Location location);
 
 }

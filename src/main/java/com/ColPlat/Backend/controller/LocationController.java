@@ -4,10 +4,7 @@ import com.ColPlat.Backend.model.dto.response.CityResponse;
 import com.ColPlat.Backend.model.dto.response.DistrictResponse;
 import com.ColPlat.Backend.model.dto.response.RegionResponse;
 import com.ColPlat.Backend.model.entity.Country;
-import com.ColPlat.Backend.service.CityService;
-import com.ColPlat.Backend.service.CountryService;
-import com.ColPlat.Backend.service.DistrictService;
-import com.ColPlat.Backend.service.RegionService;
+import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +23,7 @@ public class LocationController {
     private final RegionService regionService;
     private final DistrictService districtService;
     private final CityService cityService;
+    private final LocationService locationService;
 
     @GetMapping("/getAllCountries")
     public ResponseEntity<List<Country>> getAllCountries(){
@@ -45,6 +43,11 @@ public class LocationController {
     @GetMapping("/getCitiesByDistrictId")
     public ResponseEntity<List<CityResponse>> getCitiesByRegion(@RequestParam int districtId){
         return ResponseEntity.ok(cityService.getCitiesByDistrictId(districtId));
+    }
+
+    @GetMapping("/getLocationString")
+    public ResponseEntity<String> getLocationString(@RequestParam Long locationId){
+        return ResponseEntity.ok(locationService.getLocationStringFromId(locationId));
     }
 
 }
