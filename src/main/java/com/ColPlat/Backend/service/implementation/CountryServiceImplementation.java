@@ -32,6 +32,11 @@ public class CountryServiceImplementation implements CountryService {
     }
 
     @Override
+    public List<Country> getAllCountries() {
+        return countryRepository.findAll();
+    }
+
+    @Override
     public short findCountryId(String country) {
         Optional<Country> countryOptional = countryRepository.findByName(country);
         if(countryOptional.isPresent()){

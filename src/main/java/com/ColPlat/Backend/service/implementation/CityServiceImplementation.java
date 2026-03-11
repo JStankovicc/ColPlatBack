@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.dto.response.CityResponse;
 import com.ColPlat.Backend.model.entity.City;
 import com.ColPlat.Backend.repository.CityRepository;
 import com.ColPlat.Backend.service.CityService;
@@ -23,18 +24,28 @@ public class CityServiceImplementation implements CityService {
     }
 
     @Override
-    public List<City> getCitiesByRegion(int id) {
-        List<City> citiesByRegion = cityRepository.findAllByRegionId(id);
-        return citiesByRegion;
+    public List<City> getCitiesByDistrict(int id) {
+        List<City> citiesByDistrict = cityRepository.findAllByDistrictId(id);
+        return citiesByDistrict;
     }
 
     @Override
-    public List<String> getCitiesNamesByRegion(Integer regionId) {
-        List<City> cities = cityRepository.findAllByRegionId(regionId);
+    public List<String> getCitiesNamesByDistrict(Integer districtId) {
+        List<City> cities = cityRepository.findAllByDistrictId(districtId);
         List<String> names = new ArrayList<>();
         for(City c : cities){
             names.add(c.getName());
         }
         return names;
+    }
+
+    @Override
+    public List<CityResponse> getCitiesByDistrictId(int districtId) {
+        List<City> cities = cityRepository.findAllByDistrictId(districtId);
+        List<CityResponse> citiesResponses = new ArrayList<>();
+        for(City c : cities){
+            citiesResponses.add(c.getCityResponse());
+        }
+        return citiesResponses;
     }
 }

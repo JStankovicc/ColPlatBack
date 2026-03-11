@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.model.entity;
 
+import com.ColPlat.Backend.model.dto.response.CityResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,33 +14,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "_city")
 public class City {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private int regionId;
+    private int districtId;
     private String name;
 
-    public void setId(Integer id) {
-        this.id = id;
+    public CityResponse getCityResponse(){
+        return CityResponse.builder().id(this.id).name(this.name).build();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public int getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

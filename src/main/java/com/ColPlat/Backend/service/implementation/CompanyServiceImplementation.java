@@ -24,6 +24,7 @@ public class CompanyServiceImplementation implements CompanyService {
     private final CountryService countryService;
     private final RegionService regionService;
     private final CityService cityService;
+    private final DistrictService districtService;
 
     @Override
     public Company getCompanyFromToken(String token){
@@ -66,7 +67,8 @@ public class CompanyServiceImplementation implements CompanyService {
             CompanySettingsInfoResponse companySettingsInfoResponse = new CompanySettingsInfoResponse();
             Location location = locationService.getLocationById(companyData.getLocationId());
             City city = cityService.getCityById(location.getCityId());
-            Region region = regionService.getRegionById(city.getRegionId());
+            District district = districtService.getDistrictById(city.getDistrictId());
+            Region region = regionService.getRegionById(district.getRegionId());
             Country country = countryService.getCountryById(region.getCountryId());
 
 
@@ -77,6 +79,7 @@ public class CompanyServiceImplementation implements CompanyService {
                 companySettingsInfoResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(companyData.getCompanyLogoPic()));
                 companySettingsInfoResponse.setCountry(country.getName());
                 companySettingsInfoResponse.setRegion(region.getName());
+                companySettingsInfoResponse.setDistrict(district.getName());
                 companySettingsInfoResponse.setCity(city.getName());
                 companySettingsInfoResponse.setSupportTypes(companyData.getSupportTypes().stream().map(Enum::name).toList());
                 companySettingsInfoResponse.setBasicPackages(companyData.getBasicProfilesNum());

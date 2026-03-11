@@ -1,6 +1,7 @@
 package com.ColPlat.Backend.service.implementation;
 
 
+import com.ColPlat.Backend.model.dto.response.RegionResponse;
 import com.ColPlat.Backend.model.entity.Country;
 import com.ColPlat.Backend.model.entity.Region;
 import com.ColPlat.Backend.repository.RegionRepository;
@@ -39,6 +40,16 @@ public class RegionServiceImplementation implements RegionService {
             names.add(r.getName());
         }
         return names;
+    }
+
+    @Override
+    public List<RegionResponse> getRegionResponsesByCountry(short countryId) {
+        List<Region> regions = regionRepository.findAllByCountryId(countryId);
+        List<RegionResponse> responses = new ArrayList<>();
+        for(Region r : regions){
+            responses.add(r.getRegionResponseFromRegion());
+        }
+        return responses;
     }
 
     @Override

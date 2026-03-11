@@ -9,5 +9,7 @@ public interface CountryService {
 
     List<String> getAllCountriesNames();
 
+    List<Country> getAllCountries();
+
     short findCountryId(String country);
 }

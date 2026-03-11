@@ -18,6 +18,7 @@ public class CompanySettingsInfoResponse {
     private byte[] logoPic;
     private String country;
     private String region;
+    private String district;
     private String city;
     private List<String> supportTypes;
     private int basicPackages;
