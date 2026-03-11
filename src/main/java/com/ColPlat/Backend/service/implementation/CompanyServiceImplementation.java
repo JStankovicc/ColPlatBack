@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,7 +65,7 @@ public class CompanyServiceImplementation implements CompanyService {
             Company companyData = company.get();
             CompanySettingsInfoResponse companySettingsInfoResponse = new CompanySettingsInfoResponse();
             Location location = locationService.getLocationById(companyData.getLocationId());
-            City city = cityService.getCityById(location.getCityId());
+            City city = cityService.getCityByName(location.getCity());
             District district = districtService.getDistrictById(city.getDistrictId());
             Region region = regionService.getRegionById(district.getRegionId());
             Country country = countryService.getCountryById(region.getCountryId());
@@ -82,9 +81,7 @@ public class CompanyServiceImplementation implements CompanyService {
                 companySettingsInfoResponse.setDistrict(district.getName());
                 companySettingsInfoResponse.setCity(city.getName());
                 companySettingsInfoResponse.setSupportTypes(companyData.getSupportTypes().stream().map(Enum::name).toList());
-                companySettingsInfoResponse.setBasicPackages(companyData.getBasicProfilesNum());
-                companySettingsInfoResponse.setStandardPackages(companyData.getAdvancedProfilesNum());
-                companySettingsInfoResponse.setPremiumPackages(companyData.getPremiumProfilesNum());
+                companySettingsInfoResponse.setPackagesNumber(companyData.getNumberOfProfiles());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

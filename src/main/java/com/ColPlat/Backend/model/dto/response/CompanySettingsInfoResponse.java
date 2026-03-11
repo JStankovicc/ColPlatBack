@@ -21,7 +21,5 @@ public class CompanySettingsInfoResponse {
     private String district;
     private String city;
     private List<String> supportTypes;
-    private int basicPackages;
-    private int standardPackages;
-    private int premiumPackages;
+    private int packagesNumber;
 }

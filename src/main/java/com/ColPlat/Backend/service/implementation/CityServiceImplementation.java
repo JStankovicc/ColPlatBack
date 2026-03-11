@@ -48,4 +48,10 @@ public class CityServiceImplementation implements CityService {
         }
         return citiesResponses;
     }
+
+    @Override
+    public City getCityByName(String name) {
+        Optional<City> city = cityRepository.getByName(name);
+        return city.orElse(null);
+    }
 }

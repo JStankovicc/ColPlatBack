@@ -18,6 +18,7 @@ public class District {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private int regionId;
+    @Column(unique = true, nullable = false)
     private String name;
 
     public DistrictResponse getDistrictResponse() {

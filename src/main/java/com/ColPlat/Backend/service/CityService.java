@@ -12,4 +12,6 @@ public interface CityService {
     List<String> getCitiesNamesByDistrict(Integer regionId);
 
     List<CityResponse> getCitiesByDistrictId(int districtId);
+
+    City getCityByName(String name);
 }

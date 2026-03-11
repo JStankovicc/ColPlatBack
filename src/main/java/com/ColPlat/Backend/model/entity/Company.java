@@ -26,7 +26,9 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String registryNum;
     private long locationId;
     @Lob
@@ -41,9 +43,7 @@ public class Company {
     )
     @Enumerated(EnumType.STRING)
     private Set<SupportType> supportTypes;
-    private int basicProfilesNum;
-    private int advancedProfilesNum;
-    private int premiumProfilesNum;
+    private int numberOfProfiles;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -57,111 +57,4 @@ public class Company {
         return companyResponse;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRegistryNum() {
-        return registryNum;
-    }
-
-    public void setRegistryNum(String registryNum) {
-        this.registryNum = registryNum;
-    }
-
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long regionId) {
-        this.locationId = regionId;
-    }
-
-    public byte[] getCompanyLogoPic() {
-        return companyLogoPic;
-    }
-
-    public void setCompanyLogoPic(byte[] companyLogoPic) {
-        this.companyLogoPic = companyLogoPic;
-    }
-
-    public Long getBillingDetailsId() {
-        return billingDetailsId;
-    }
-
-    public void setBillingDetailsId(Long billingDetailsId) {
-        this.billingDetailsId = billingDetailsId;
-    }
-
-    public boolean isTermsAndConditionsAccepted() {
-        return termsAndConditionsAccepted;
-    }
-
-    public void setTermsAndConditionsAccepted(boolean termsAndConditionsAccepted) {
-        this.termsAndConditionsAccepted = termsAndConditionsAccepted;
-    }
-
-    public Set<SupportType> getSupportTypes() {
-        return supportTypes;
-    }
-
-    public void setSupportTypes(Set<SupportType> supportTypes) {
-        this.supportTypes = supportTypes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public void setLocationId(long locationId) {
-        this.locationId = locationId;
-    }
-
-    public int getBasicProfilesNum() {
-        return basicProfilesNum;
-    }
-
-    public void setBasicProfilesNum(int basicProfilesNum) {
-        this.basicProfilesNum = basicProfilesNum;
-    }
-
-    public int getAdvancedProfilesNum() {
-        return advancedProfilesNum;
-    }
-
-    public void setAdvancedProfilesNum(int advancedProfilesNum) {
-        this.advancedProfilesNum = advancedProfilesNum;
-    }
-
-    public int getPremiumProfilesNum() {
-        return premiumProfilesNum;
-    }
-
-    public void setPremiumProfilesNum(int premiumProfilesNum) {
-        this.premiumProfilesNum = premiumProfilesNum;
-    }
 }

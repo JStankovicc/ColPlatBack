@@ -461,7 +461,7 @@ public class DataLoader {
         supportTypes.add(SupportType.CHAT);
         //supportTypes.add(SupportTypes.PHONE);
 
-        Company company = new Company(1L,"ABPlat", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 5 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
+        Company company = new Company(1L,"ABPlat", "123456789", 1L, defaultLogo, 1L, true, supportTypes, 20 , LocalDateTime.now(), LocalDateTime.now());
 
         companyRepository.save(company);
 
@@ -478,7 +478,7 @@ public class DataLoader {
 
         supportTypes.add(SupportType.PHONE);
 
-        Company company2 = new Company(2L,"Lora-Pro DOO", "21426300", 2L, defaultLogo, 2L, true, supportTypes, 10 , 10 , 20 , LocalDateTime.now(), LocalDateTime.now());
+        Company company2 = new Company(2L,"Lora-Pro DOO", "21426300", 2L, defaultLogo, 2L, true, supportTypes, 20 , LocalDateTime.now(), LocalDateTime.now());
 
         companyRepository.save(company2);
     }
@@ -497,9 +497,9 @@ public class DataLoader {
         city = new City(2, 2, "Kraljevo");
         cityRepository.save(city);
 
-        Location location = new Location(1L, 2, "Karadjordjeva 171");
+        Location location = new Location(1L, "Kraljevo", "Karadjordjeva 171");
         locationRepository.save(location);
-        location = new Location(2L,1,"Studentska 5");
+        location = new Location(2L,"Beograd","Studentska 5");
         locationRepository.save(location);
     }
 
