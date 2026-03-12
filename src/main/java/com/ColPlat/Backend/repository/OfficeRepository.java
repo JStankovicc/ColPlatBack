@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OfficeRepository extends JpaRepository<Office, Integer> {
+public interface OfficeRepository extends JpaRepository<Office, Long> {
     List<Office> findAllByCompany(Company company);
 }

@@ -2,6 +2,7 @@ package com.ColPlat.Backend.service.implementation;
 
 import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
 import com.ColPlat.Backend.model.enums.Role;
 import com.ColPlat.Backend.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,6 +89,11 @@ public class UserServiceImplementation implements UserService {
         }
 
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAllByCompanyAndRole(Long companyId, Role role) {
+        return userRepository.findAllByCompanyIdAndRole(companyId, role);
     }
 
     @Override

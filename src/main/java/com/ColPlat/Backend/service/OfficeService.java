@@ -12,4 +12,8 @@ public interface OfficeService {
     public void createOffice(CreateOfficeRequest request, Company company);
 
     public List<OfficeResponse> getAllOfficesByCompany(Company company);
+
+    public void updateOffice(Long officeId, CreateOfficeRequest request);
+
+    public void deleteOffice(Long officeId);
 }

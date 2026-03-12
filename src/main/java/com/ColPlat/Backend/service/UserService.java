@@ -2,7 +2,9 @@ package com.ColPlat.Backend.service;
 
 import com.ColPlat.Backend.model.dto.request.ChangeUserRoleRequest;
 import com.ColPlat.Backend.model.dto.request.UserRequest;
+import com.ColPlat.Backend.model.dto.response.UserResponse;
 import com.ColPlat.Backend.model.entity.User;
+import com.ColPlat.Backend.model.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -29,5 +31,7 @@ public interface UserService {
     void changeRole(ChangeUserRoleRequest changeUserRoleRequest);
 
     void addUserWithProfile(UserRequest userRequest, Long userProfileId, Long companyId);
+
+    List<User> findAllByCompanyAndRole(Long companyId, Role role);
 
 }

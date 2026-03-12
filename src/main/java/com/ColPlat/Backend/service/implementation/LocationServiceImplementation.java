@@ -35,21 +35,41 @@ public class LocationServiceImplementation implements LocationService {
         if (optionalLocation.isPresent()) {
             Location location = optionalLocation.get();
             City city = cityService.getCityByName(location.getCity());
-            District district = districtService.getDistrictById(city.getDistrictId());
-            Region region = regionService.getRegionById(district.getRegionId());
-            Country country = countryService.getCountryById(region.getCountryId());
+            if (city != null) {
+                District district = districtService.getDistrictById(city.getDistrictId());
+                Region region = regionService.getRegionById(district.getRegionId());
+                Country country = countryService.getCountryById(region.getCountryId());
+                StringBuilder locationString = new StringBuilder();
+                locationString.append(location.getAddress());
+                locationString.append(", ");
+                locationString.append(location.getCity());
+                locationString.append(", ");
+                locationString.append(district.getName());
+                locationString.append(", ");
+                locationString.append(region.getName());
+                locationString.append(", ");
+                locationString.append(country.getName());
+                return locationString.toString();
+            } else {
+                return location.getAddress() + ", " + location.getCity();
+            }
 
-            StringBuilder locationString = new StringBuilder();
-            locationString.append(location.getAddress());
-            locationString.append(", ");
-            locationString.append(location.getCity());
-            locationString.append(", ");
-            locationString.append(district.getName());
-            locationString.append(", ");
-            locationString.append(region.getName());
-            locationString.append(", ");
-            locationString.append(country.getName());
-            return locationString.toString();
+        }
+        return null;
+    }
+
+    @Override
+    public Location updateLocation(Location location) {
+        Optional<Location> optionalLocation = locationRepository.findById(location.getId());
+        if (optionalLocation.isPresent()) {
+            Location locationToUpdate = optionalLocation.get();
+            locationToUpdate.setAddress(location.getAddress());
+            locationToUpdate.setCity(location.getCity());
+            locationToUpdate.setDistrictId(location.getDistrictId());
+            locationToUpdate.setRegionId(location.getRegionId());
+            locationToUpdate.setCountryId(location.getCountryId());
+            locationRepository.save(locationToUpdate);
+            return locationToUpdate;
         }
         return null;
     }

@@ -4,13 +4,11 @@ import com.ColPlat.Backend.model.dto.response.CityResponse;
 import com.ColPlat.Backend.model.dto.response.DistrictResponse;
 import com.ColPlat.Backend.model.dto.response.RegionResponse;
 import com.ColPlat.Backend.model.entity.Country;
+import com.ColPlat.Backend.model.entity.Location;
 import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,6 +46,11 @@ public class LocationController {
     @GetMapping("/getLocationString")
     public ResponseEntity<String> getLocationString(@RequestParam Long locationId){
         return ResponseEntity.ok(locationService.getLocationStringFromId(locationId));
+    }
+
+    @GetMapping()
+    public ResponseEntity<Location> getLocation(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long locationId){
+        return ResponseEntity.ok(locationService.getLocationById(locationId));
     }
 
 }

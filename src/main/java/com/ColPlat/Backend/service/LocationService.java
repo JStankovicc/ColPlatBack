@@ -8,4 +8,6 @@ public interface LocationService {
     public Location createLocation(Location location);
 
     public String getLocationStringFromId(Long id);
+
+    public Location updateLocation(Location location);
 }
