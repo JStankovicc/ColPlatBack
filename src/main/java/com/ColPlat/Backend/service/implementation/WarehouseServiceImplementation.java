@@ -103,4 +103,9 @@ public class WarehouseServiceImplementation implements WarehouseService {
     public void deleteWarehouse(Long warehouseId) {
         warehouseRepository.deleteById(warehouseId);
     }
+
+    @Override
+    public Warehouse findById(Long warehouseId) {
+        return warehouseRepository.findById(warehouseId).orElse(null);
+    }
 }

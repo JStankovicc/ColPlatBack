@@ -5,6 +5,7 @@ import com.ColPlat.Backend.model.dto.request.CreateWarehouseRequest;
 import com.ColPlat.Backend.model.dto.response.OfficeResponse;
 import com.ColPlat.Backend.model.dto.response.WarehouseResponse;
 import com.ColPlat.Backend.model.entity.Company;
+import com.ColPlat.Backend.model.entity.Warehouse;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface WarehouseService {
     public void updateWarehouse(Long warehouseId, CreateWarehouseRequest request);
 
     public void deleteWarehouse(Long warehouseId);
+
+    public Warehouse findById(Long warehouseId);
 }

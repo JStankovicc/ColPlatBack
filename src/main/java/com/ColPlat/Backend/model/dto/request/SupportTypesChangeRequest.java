@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_support_types_change_request")
 public class SupportTypesChangeRequest {
     @Id
     private Long id;
@@ -27,43 +26,4 @@ public class SupportTypesChangeRequest {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getOldSupportTypes() {
-        return oldSupportTypes;
-    }
-
-    public void setOldSupportTypes(String oldSupportTypes) {
-        this.oldSupportTypes = oldSupportTypes;
-    }
-
-    public String getNewSupportTypes() {
-        return newSupportTypes;
-    }
-
-    public void setNewSupportTypes(String newSupportTypes) {
-        this.newSupportTypes = newSupportTypes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

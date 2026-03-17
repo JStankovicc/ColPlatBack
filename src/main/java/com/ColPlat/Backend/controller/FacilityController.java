@@ -2,14 +2,13 @@ package com.ColPlat.Backend.controller;
 
 import com.ColPlat.Backend.model.dto.request.CreateOfficeRequest;
 import com.ColPlat.Backend.model.dto.request.CreateWarehouseRequest;
+import com.ColPlat.Backend.model.dto.request.CreateWarehouseZoneRequest;
 import com.ColPlat.Backend.model.dto.response.OfficeResponse;
 import com.ColPlat.Backend.model.dto.response.WarehouseResponse;
+import com.ColPlat.Backend.model.dto.response.WarehouseZoneResponse;
 import com.ColPlat.Backend.model.entity.Location;
 import com.ColPlat.Backend.model.entity.Office;
-import com.ColPlat.Backend.service.CompanyService;
-import com.ColPlat.Backend.service.LocationService;
-import com.ColPlat.Backend.service.OfficeService;
-import com.ColPlat.Backend.service.WarehouseService;
+import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ public class FacilityController {
     private final OfficeService officeService;
     private final WarehouseService warehouseService;
     private final CompanyService companyService;
-    private final LocationService locationService;
+    private final WarehouseZoneService warehouseZoneService;
 
     @GetMapping("/office/all")
     public ResponseEntity<List<OfficeResponse>> getOfficesForCompany(@RequestHeader("Authorization") String authorizationHeader){
@@ -68,5 +67,25 @@ public class FacilityController {
     @DeleteMapping("/warehouse")
     public void deleteWarehouse(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long warehouseId) {
         warehouseService.deleteWarehouse(warehouseId);
+    }
+
+    @GetMapping("/warehouse/zone/all")
+    public ResponseEntity<List<WarehouseZoneResponse>> getWarehouseZonesForWarehouse(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long warehouseId){
+        return ResponseEntity.ok(warehouseZoneService.getAllWarehouseZonesByWarehouse(warehouseService.findById(warehouseId)));
+    }
+
+    @PostMapping("/warehouse/zone")
+    public void addWarehouseZone(@RequestHeader("Authorization") String authoprizationHeader, @RequestBody CreateWarehouseZoneRequest request){
+        warehouseZoneService.createWarehouseZone(request);
+    }
+
+    @PutMapping("/warehouse/zone")
+    public void updateWarehouseZone(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long warehouseZoneId, @RequestBody CreateWarehouseZoneRequest request){
+        warehouseZoneService.updateWarehouseZone(warehouseZoneId, request);
+    }
+
+    @DeleteMapping("/warehouse/zone")
+    public void deleteWarehouseZone(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long warehouseZoneId){
+        warehouseZoneService.deleteWarehouseZone(warehouseZoneId);
     }
 }
