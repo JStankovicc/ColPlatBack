@@ -2,9 +2,7 @@ package com.ColPlat.Backend.service.implementation;
 
 import com.ColPlat.Backend.model.dto.request.CreateWarehouseRequest;
 import com.ColPlat.Backend.model.dto.response.WarehouseResponse;
-import com.ColPlat.Backend.model.entity.Company;
-import com.ColPlat.Backend.model.entity.Location;
-import com.ColPlat.Backend.model.entity.Warehouse;
+import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.repository.WarehouseRepository;
 import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ public class WarehouseServiceImplementation implements WarehouseService {
     private final CompanyService companyService;
     private final UserService userService;
     private final UserProfileService userProfileService;
+    private final JwtService jwtService;
 
     @Override
     public void createWarehouse(CreateWarehouseRequest request, Company company) {
@@ -52,7 +51,7 @@ public class WarehouseServiceImplementation implements WarehouseService {
 
     @Override
     @Transactional
-    public List<WarehouseResponse> getAllWarehousesByCompany(Company company) {
+    public List<WarehouseResponse> getAllWarehouseResponsesByCompany(Company company) {
         List<Warehouse> warehouses = warehouseRepository.findAllByCompany(company);
         List<WarehouseResponse> warehouseResponses = new ArrayList<>();
         for (Warehouse warehouse : warehouses) {
@@ -68,6 +67,11 @@ public class WarehouseServiceImplementation implements WarehouseService {
                     .build());
         }
         return warehouseResponses;
+    }
+
+    @Override
+    public List<Warehouse> getAllWarehousesByCompany(Company company) {
+        return warehouseRepository.findAllByCompany(company);
     }
 
     @Override
@@ -108,4 +112,14 @@ public class WarehouseServiceImplementation implements WarehouseService {
     public Warehouse findById(Long warehouseId) {
         return warehouseRepository.findById(warehouseId).orElse(null);
     }
+
+    @Override
+    public boolean existsById(Long warehouseId) {
+        Optional<Warehouse> warehouseOptional = warehouseRepository.findById(warehouseId);
+        if(warehouseOptional.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
 }

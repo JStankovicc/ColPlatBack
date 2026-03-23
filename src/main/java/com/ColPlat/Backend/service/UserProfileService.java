@@ -25,6 +25,8 @@ public interface UserProfileService {
 
     UserResponse getUserResponseFromUser(User u);
 
+    UserProfileResponse getUserProfileResponseFromUser(User u);
+
     UserResponseWithPermissionsResponse getUserResponseWithPermissionsFromUser(User u);
 
     void createUserAndProfile(UserRequest createUserRequest, Company company);

@@ -141,6 +141,20 @@ public class UserProfileServiceImplementation implements UserProfileService {
     }
 
     @Override
+    public UserProfileResponse getUserProfileResponseFromUser(User u) {
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findById(u.getUserProfileId());
+        if (userProfileOptional.isPresent()){
+            UserProfile userProfile = userProfileOptional.get();
+            return UserProfileResponse.builder()
+                    .name(userProfile.getDisplayName())
+                    .displayName(userProfile.getDisplayName())
+                    .profilePic(userProfile.getProfilePic())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
     public UserResponseWithPermissionsResponse getUserResponseWithPermissionsFromUser(User u) {
         Optional<UserProfile> userProfileOptional = userProfileRepository.findById(u.getUserProfileId());
         if(userProfileOptional.isPresent()){
