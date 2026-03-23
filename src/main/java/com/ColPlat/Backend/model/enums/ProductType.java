@@ -1,0 +1,69 @@
+package com.ColPlat.Backend.model.enums;
+
+public enum ProductType {
+
+        GENERAL_MERCHANDISE,
+        OFFICE_SUPPLIES,
+        HOUSEHOLD_GOODS,
+        PERSONAL_CARE,
+        TOYS,
+        SPORTS_EQUIPMENT,
+        PET_SUPPLIES,
+
+        ELECTRONICS,
+        COMPUTERS,
+        MOBILE_DEVICES,
+        CONSUMER_ELECTRONICS,
+        ACCESSORIES,
+        NETWORK_EQUIPMENT,
+        APPLIANCES,
+
+        CLOTHING_TEXTILE,
+        FOOTWEAR,
+        FASHION_ACCESSORIES,
+
+        PERISHABLE_FOOD,
+        NON_PERISHABLE_FOOD,
+        FROZEN_FOOD,
+        DAIRY_PRODUCTS,
+        MEAT_PRODUCTS,
+        FRUITS_VEGETABLES,
+        BEVERAGES,
+        ALCOHOLIC_BEVERAGES,
+
+        HAZARDOUS_MATERIAL,
+        FLAMMABLE,
+        TOXIC,
+        CORROSIVE,
+        FRAGILE,
+        OVERSIZED,
+        HEAVY_GOODS,
+        TEMPERATURE_SENSITIVE,
+        HIGH_VALUE,
+
+        SPARE_PARTS,
+        RAW_MATERIALS,
+        SEMI_FINISHED_GOODS,
+        FINISHED_GOODS,
+        INDUSTRIAL_EQUIPMENT,
+        CONSTRUCTION_MATERIALS,
+        AUTOMOTIVE_PARTS,
+        MACHINERY,
+
+        CHEMICALS,
+        PHARMACEUTICALS,
+        MEDICAL_DEVICES,
+        COSMETICS,
+
+        PACKAGING_MATERIALS,
+        PALLETS,
+        CONTAINERS,
+
+        BOOKS,
+        MEDIA,
+        ARTWORK,
+        COLLECTIBLES,
+
+        DIGITAL
+
+}

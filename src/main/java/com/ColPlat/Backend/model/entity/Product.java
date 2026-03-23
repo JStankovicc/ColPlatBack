@@ -1,5 +1,6 @@
 package com.ColPlat.Backend.model.entity;
 
+import com.ColPlat.Backend.model.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -56,6 +57,8 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
+
+    private ProductType productType;
 
     @CreationTimestamp
     @Column(updatable = false)

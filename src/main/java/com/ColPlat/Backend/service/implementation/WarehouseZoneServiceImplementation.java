@@ -73,4 +73,9 @@ public class WarehouseZoneServiceImplementation implements WarehouseZoneService 
     public void deleteWarehouseZone(Long warehouseZoneId) {
         warehouseZoneRepository.deleteById(warehouseZoneId);
     }
+
+    @Override
+    public WarehouseZone findById(Long id) {
+        return warehouseZoneRepository.findById(id).orElse(null);
+    }
 }
