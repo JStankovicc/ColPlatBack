@@ -58,6 +58,7 @@ public class Product {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    @Enumerated(EnumType.STRING)
     private ProductType productType;
 
     @CreationTimestamp

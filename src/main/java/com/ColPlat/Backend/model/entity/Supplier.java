@@ -50,7 +50,7 @@ public class Supplier {
     @Column(nullable = false)
     private boolean active = true;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "supplier", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Product> products = new ArrayList<>();
 
