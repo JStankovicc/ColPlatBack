@@ -80,6 +80,8 @@ public class ProductServiceImplementation implements ProductService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public ProductResponse getProductResponse(Product product){
         return ProductResponse.builder()
                 .id(product.getId())

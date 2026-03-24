@@ -14,4 +14,6 @@ public interface ProductService {
     void save(ProductRequest productRequest, String bearer);
 
     void saveProductSupplier(Long supplierId, Long productId);
+
+    ProductResponse getProductResponse(Product product);
 }

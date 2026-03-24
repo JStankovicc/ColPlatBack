@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @DiscriminatorValue("WAREHOUSE")
 public class Warehouse extends Facility {
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private User manager;
 }

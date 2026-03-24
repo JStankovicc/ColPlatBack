@@ -122,4 +122,19 @@ public class WarehouseServiceImplementation implements WarehouseService {
         return false;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public WarehouseResponse getWarehouseResponse(Warehouse warehouse){
+        return WarehouseResponse.builder()
+                .id(warehouse.getId())
+                .name(warehouse.getName())
+                .code(warehouse.getCode())
+                .manager(userProfileService.getUserResponseFromUser(warehouse.getManager()))
+                .openAt(warehouse.getOpenAt())
+                .closedAt(warehouse.getClosedAt())
+                .locationId(warehouse.getLocation().getId())
+                .location(locationService.getLocationStringFromId(warehouse.getLocation().getId()))
+                .build();
+    }
+
 }

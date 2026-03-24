@@ -4,6 +4,7 @@ import com.ColPlat.Backend.model.dto.request.CreateWarehouseRequest;
 import com.ColPlat.Backend.model.dto.response.WarehouseResponse;
 import com.ColPlat.Backend.model.entity.Company;
 import com.ColPlat.Backend.model.entity.Warehouse;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface WarehouseService {
     public Warehouse findById(Long warehouseId);
 
     boolean existsById(Long warehouseId);
+
+    WarehouseResponse getWarehouseResponse(Warehouse warehouse);
 }
