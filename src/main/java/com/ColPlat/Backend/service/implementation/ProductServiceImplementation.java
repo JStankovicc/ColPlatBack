@@ -98,4 +98,11 @@ public class ProductServiceImplementation implements ProductService {
                 .productType(product.getProductType())
                 .build();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductResponse getProductResponseFromSKUOrBarcode(String code) {
+        Optional<Product> productOptional = productRepository.findBySkuOrBarcode(code);
+        return productOptional.map(this::getProductResponse).orElse(null);
+    }
 }

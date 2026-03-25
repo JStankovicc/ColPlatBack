@@ -16,4 +16,6 @@ public interface ProductService {
     void saveProductSupplier(Long supplierId, Long productId);
 
     ProductResponse getProductResponse(Product product);
+
+    ProductResponse getProductResponseFromSKUOrBarcode(String code);
 }

@@ -38,6 +38,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.findById(productId));
     }
 
+    @GetMapping("/byCode")
+    public ResponseEntity<ProductResponse> getProductByCode(@RequestHeader("Authorization") String authorizationHeader, @RequestParam String code){
+        return ResponseEntity.ok(productService.getProductResponseFromSKUOrBarcode(code));
+    }
+
     @PostMapping("/save")
     public void saveProduct(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ProductRequest productRequest){
         productService.save(productRequest, authorizationHeader.replace("Bearer ", ""));
