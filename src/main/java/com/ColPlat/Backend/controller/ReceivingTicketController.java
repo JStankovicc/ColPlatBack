@@ -1,7 +1,9 @@
 package com.ColPlat.Backend.controller;
 
+import com.ColPlat.Backend.model.dto.request.ReceivingTicketApprovalRequest;
 import com.ColPlat.Backend.model.dto.request.ReceivingTicketRequest;
 import com.ColPlat.Backend.model.dto.response.ReceivingTicketResponse;
+import com.ColPlat.Backend.model.entity.ReceivingTicketApproval;
 import com.ColPlat.Backend.service.ReceivingTicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,11 @@ public class ReceivingTicketController {
     @PostMapping("/save")
     public void save(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ReceivingTicketRequest receivingTicketRequest){
         receivingTicketService.save(receivingTicketRequest);
+    }
+
+    @PostMapping("/approve")
+    public void approveTicket(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ReceivingTicketApprovalRequest receivingTicketApprovalRequest){
+        receivingTicketService.approve(authorizationHeader.replace("Bearer ",""), receivingTicketApprovalRequest);
     }
 
 }

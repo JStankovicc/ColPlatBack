@@ -98,7 +98,7 @@ public class WarehouseUserServiceImplementation implements WarehouseUserService 
 
     @Override
     @Transactional(readOnly = true)
-    public List<WarehouseUserResponse> getAllWarehouseUsers(Long warehouseId) {
+    public List<WarehouseUserResponse> getAllWarehouseUserResponses(Long warehouseId) {
         if (!warehouseService.existsById(warehouseId)) {
             throw new IllegalArgumentException("Magacin sa ID-em " + warehouseId + " ne postoji.");
         }
@@ -111,5 +111,10 @@ public class WarehouseUserServiceImplementation implements WarehouseUserService 
                         .userProfileResponse(userProfileService.getUserProfileResponseFromUser(wu.getUser()))
                         .build())
                 .toList();
+    }
+
+    @Override
+    public List<WarehouseUser> getAllWarehouseUsers(Long warehouseId) {
+        return warehouseUserRepository.findByIdWarehouseId(warehouseId);
     }
 }

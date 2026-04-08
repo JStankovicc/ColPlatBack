@@ -3,6 +3,7 @@ package com.ColPlat.Backend.service;
 import com.ColPlat.Backend.model.dto.request.AddWarehouseUserRequest;
 import com.ColPlat.Backend.model.dto.response.WarehouseResponse;
 import com.ColPlat.Backend.model.dto.response.WarehouseUserResponse;
+import com.ColPlat.Backend.model.entity.WarehouseUser;
 import com.ColPlat.Backend.model.enums.WarehouseRole;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface WarehouseUserService {
 
     public void saveOrUpdateUserWarehouse(AddWarehouseUserRequest addWarehouseUserRequest);
 
-    List<WarehouseUserResponse> getAllWarehouseUsers(Long warehouseId);
+    List<WarehouseUserResponse> getAllWarehouseUserResponses(Long warehouseId);
+
+    List<WarehouseUser> getAllWarehouseUsers(Long warehouseId);
 }

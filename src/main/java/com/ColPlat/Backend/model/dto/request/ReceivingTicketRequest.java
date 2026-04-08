@@ -1,9 +1,5 @@
 package com.ColPlat.Backend.model.dto.request;
 
-import com.ColPlat.Backend.model.entity.ProductAmount;
-import com.ColPlat.Backend.model.entity.Supplier;
-import com.ColPlat.Backend.model.entity.WarehouseZone;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

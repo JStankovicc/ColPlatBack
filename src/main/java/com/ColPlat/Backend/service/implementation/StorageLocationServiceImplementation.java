@@ -74,6 +74,12 @@ public class StorageLocationServiceImplementation implements StorageLocationServ
         storageLocationRepository.save(storageLocation);
     }
 
+    @Override
+    public StorageLocation findById(Long storageLocationId) {
+        return storageLocationRepository.findById(storageLocationId).orElse(null);
+    }
+
+
     public StorageLocationResponse getStorageLocationResponse(StorageLocation storageLocation){
         return StorageLocationResponse.builder()
                 .id(storageLocation.getId())

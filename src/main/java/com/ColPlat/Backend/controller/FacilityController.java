@@ -75,7 +75,7 @@ public class FacilityController {
 
     @GetMapping("/warehouse/users")
     public ResponseEntity<List<WarehouseUserResponse>> getAllWarehouseUsers(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long warehouseId){
-        return ResponseEntity.ok(warehouseUserService.getAllWarehouseUsers(warehouseId));
+        return ResponseEntity.ok(warehouseUserService.getAllWarehouseUserResponses(warehouseId));
     }
 
     @PostMapping("/warehouse/addOrChangeUser")

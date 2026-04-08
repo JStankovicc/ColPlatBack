@@ -1,23 +1,17 @@
 package com.ColPlat.Backend.service.implementation;
 
+import com.ColPlat.Backend.model.dto.request.ReceivingTicketApprovalRequest;
 import com.ColPlat.Backend.model.dto.request.ReceivingTicketRequest;
 import com.ColPlat.Backend.model.dto.response.ReceivingTicketResponse;
-import com.ColPlat.Backend.model.entity.ProductAmount;
-import com.ColPlat.Backend.model.entity.ReceivingTicket;
-import com.ColPlat.Backend.model.entity.WarehouseZone;
+import com.ColPlat.Backend.model.entity.*;
 import com.ColPlat.Backend.repository.ReceivingTicketRepository;
-import com.ColPlat.Backend.service.ProductService;
-import com.ColPlat.Backend.service.ReceivingTicketService;
-import com.ColPlat.Backend.service.SupplierService;
-import com.ColPlat.Backend.service.WarehouseZoneService;
+import com.ColPlat.Backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,26 +22,14 @@ public class ReceivingTicketServiceImplementation implements ReceivingTicketServ
     private final WarehouseZoneService warehouseZoneService;
     private final ProductService productService;
     private final SupplierService supplierService;
-
+    private final ReceivingTicketApprovalService receivingTicketApprovalService;
+    private final WarehouseTaskService warehouseTaskService;
 
     @Override
     @Transactional(readOnly = true)
     public ReceivingTicketResponse getById(Long id) {
         Optional<ReceivingTicket> receivingTicketOptional = receivingTicketRepository.findById(id);
         return receivingTicketOptional.map(this::getReceivingTicketResponse).orElse(null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ReceivingTicketResponse> findAllByWarehouseZone(Long warehouseZoneId) {
-        WarehouseZone warehouseZone = warehouseZoneService.findById(warehouseZoneId);
-        if(warehouseZone == null) return null;
-        List<ReceivingTicket> receivingTickets = receivingTicketRepository.findByWarehouseZone(warehouseZone);
-        List<ReceivingTicketResponse> receivingTicketResponses = new ArrayList<>();
-        for(ReceivingTicket receivingTicket : receivingTickets){
-            receivingTicketResponses.add(getReceivingTicketResponse(receivingTicket));
-        }
-        return receivingTicketResponses;
     }
 
     @Override
@@ -92,6 +74,33 @@ public class ReceivingTicketServiceImplementation implements ReceivingTicketServ
             receivingTicketRepository.save(receivingTicket);
         }
     }
+
+    @Override
+    @Transactional
+    public void approve(String bearer, ReceivingTicketApprovalRequest receivingTicketApprovalRequest) {
+        Optional<ReceivingTicket> receivingTicket = receivingTicketRepository.findById(receivingTicketApprovalRequest.getReceivingTicketId());
+        if(receivingTicket.isEmpty())return;
+        ReceivingTicket ticket = receivingTicket.get();
+
+        receivingTicketApprovalService.approve(bearer, receivingTicketApprovalRequest, ticket);
+
+        warehouseTaskService.createTaskFromTicket(ticket, receivingTicketApprovalRequest);
+
+        ticket.setActive(false);
+        receivingTicketRepository.save(ticket);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReceivingTicketResponse> findAllByWarehouseZone(Long warehouseZoneId) {
+        List<ReceivingTicket> receivingTickets = receivingTicketRepository.findAllByWarehouseZoneAndActive(warehouseZoneService.findById(warehouseZoneId), true);
+        List<ReceivingTicketResponse> receivingTicketResponses = new ArrayList<>();
+        for(ReceivingTicket receivingTicket : receivingTickets){
+            receivingTicketResponses.add(getReceivingTicketResponse(receivingTicket));
+        }
+        return receivingTicketResponses;
+    }
+
 
     @Transactional(readOnly = true)
     public ReceivingTicketResponse getReceivingTicketResponse(ReceivingTicket receivingTicket){
