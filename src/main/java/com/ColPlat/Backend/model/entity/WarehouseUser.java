@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(
-        name = "warehouse_user",
+        name = "_warehouse_user",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_warehouse_user", columnNames = {"warehouse_id", "user_id"})
         },

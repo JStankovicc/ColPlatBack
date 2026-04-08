@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "_support_types_change_request")
 public class SupportTypesChangeRequest {
     @Id
     private Long id;

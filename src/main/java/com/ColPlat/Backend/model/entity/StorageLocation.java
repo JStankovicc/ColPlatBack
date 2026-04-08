@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "storage_location")
+@Table(name = "_storage_location")
 public class StorageLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
