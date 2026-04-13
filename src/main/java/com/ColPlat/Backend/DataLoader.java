@@ -489,17 +489,17 @@ public class DataLoader {
 
         Region region = new Region(1,(short) 1, "Beograd");
         regionRepository.save(region);
-        region = new Region(2, (short) 1, "Raski okrug");
+        region = new Region(3, (short) 1, "Zapadna i Centralna Srbija");
         regionRepository.save(region);
 
-        City city = new City(1,1, "Grad Beograd");
+        City city = new City(1, 1, "Beograd");
         cityRepository.save(city);
-        city = new City(2, 2, "Kraljevo");
+        city = new City(74, 15, "Kraljevo");
         cityRepository.save(city);
 
-        Location location = new Location(1L, "Kraljevo", "Karadjordjeva 171");
+        Location location = new Location(1L, (short) 1, 3, 15, "Kraljevo", "Karadjordjeva 171");
         locationRepository.save(location);
-        location = new Location(2L,"Beograd","Studentska 5");
+        location = new Location(2L, (short) 1, 1, 1, "Grad Beograd", "Studentska 5");
         locationRepository.save(location);
     }
 
@@ -671,7 +671,7 @@ public class DataLoader {
                 .teamId(1L)    // Assuming team ID 1 exists
                 .countryId((short) 1) // Srbija
                 .regionId(1)  // Beograd
-                .cityId(1)    // Grad Beograd
+                .cityId(1)    // Beograd
                 .contacts(new ArrayList<>())
                 .status(ContactsListStatus.LEAD)
                 .build();
@@ -684,8 +684,8 @@ public class DataLoader {
                 .companyId(1L) // MockCompany
                 .teamId(1L)    // Assuming team ID 1 exists
                 .countryId((short) 1) // Srbija
-                .regionId(2)  // Raski okrug
-                .cityId(2)    // Kraljevo
+                .regionId(3)  // Zapadna i Centralna Srbija (Raški okrug)
+                .cityId(74)   // Kraljevo
                 .contacts(new ArrayList<>())
                 .status(ContactsListStatus.CLIENT)
                 .build();
@@ -699,7 +699,7 @@ public class DataLoader {
                 .teamId(1L)    // Assuming team ID 1 exists
                 .countryId((short) 1) // Srbija
                 .regionId(1)  // Beograd
-                .cityId(1)    // Grad Beograd
+                .cityId(1)    // Beograd
                 .contacts(new ArrayList<>())
                 .status(ContactsListStatus.LEAD)
                 .build();
