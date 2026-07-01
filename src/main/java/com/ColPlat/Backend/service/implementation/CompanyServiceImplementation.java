@@ -71,20 +71,22 @@ public class CompanyServiceImplementation implements CompanyService {
             Country country = countryService.getCountryById(region.getCountryId());
 
 
-            try {
-                companySettingsInfoResponse.setCompanyName(companyData.getName());
-                companySettingsInfoResponse.setRegistrationNumber(companyData.getRegistryNum());
-                companySettingsInfoResponse.setAddress(location.getAddress());
-                companySettingsInfoResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(companyData.getCompanyLogoPic()));
-                companySettingsInfoResponse.setCountry(country.getName());
-                companySettingsInfoResponse.setRegion(region.getName());
-                companySettingsInfoResponse.setDistrict(district.getName());
-                companySettingsInfoResponse.setCity(city.getName());
-                companySettingsInfoResponse.setSupportTypes(companyData.getSupportTypes().stream().map(Enum::name).toList());
-                companySettingsInfoResponse.setPackagesNumber(companyData.getNumberOfProfiles());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            companySettingsInfoResponse.setCompanyName(companyData.getName());
+            companySettingsInfoResponse.setRegistrationNumber(companyData.getRegistryNum());
+            companySettingsInfoResponse.setAddress(location.getAddress());
+            if (companyData.getCompanyLogoPic() != null && companyData.getCompanyLogoPic().length > 0) {
+                try {
+                    companySettingsInfoResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(companyData.getCompanyLogoPic()));
+                } catch (IOException e) {
+                    companySettingsInfoResponse.setLogoPic(null);
+                }
             }
+            companySettingsInfoResponse.setCountry(country.getName());
+            companySettingsInfoResponse.setRegion(region.getName());
+            companySettingsInfoResponse.setDistrict(district.getName());
+            companySettingsInfoResponse.setCity(city.getName());
+            companySettingsInfoResponse.setSupportTypes(companyData.getSupportTypes().stream().map(Enum::name).toList());
+            companySettingsInfoResponse.setPackagesNumber(companyData.getNumberOfProfiles());
 
             return companySettingsInfoResponse;
         }

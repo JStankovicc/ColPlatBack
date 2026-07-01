@@ -53,7 +53,13 @@ public class Company {
         CompanyResponse companyResponse = new CompanyResponse();
         companyResponse.setId(this.id);
         companyResponse.setCompanyName(this.name);
-        companyResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(this.companyLogoPic));
+        if (this.companyLogoPic != null && this.companyLogoPic.length > 0) {
+            try {
+                companyResponse.setLogoPic(ImageUtils.getInstance().compressPngImageToThumbnail(this.companyLogoPic));
+            } catch (IOException e) {
+                companyResponse.setLogoPic(null);
+            }
+        }
         return companyResponse;
     }
 
